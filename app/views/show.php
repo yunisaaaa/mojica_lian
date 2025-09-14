@@ -8,6 +8,12 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
 
+  <!-- Debug Section (REMOVE LATER) -->
+  <div class="w-full max-w-4xl bg-black text-green-400 p-4 mb-6 rounded-lg overflow-auto text-sm">
+    <strong>DEBUG: Users Array</strong>
+    <pre><?php print_r($users); ?></pre>
+  </div>
+
   <!-- User Table -->
   <div class="w-full max-w-6xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700 relative overflow-hidden">
 
@@ -44,25 +50,35 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-700 bg-gray-800/60">
-          <?php foreach ($users as $user): ?>
-          <tr class="hover:bg-gray-700/60 transition">
-            <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
-            <td class="px-4 py-3"><?=html_escape($user['last_name']);?></td>
-            <td class="px-4 py-3"><?=html_escape($user['first_name']);?></td>
-            <td class="px-4 py-3"><?=html_escape($user['email']);?></td>
-            <td class="px-4 py-3 text-center space-x-2">
-              <a href="<?=site_url('users/update/'.$user['id']);?>"
-                class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
-                Update
-              </a>
-              <a href="<?=site_url('users/delete/'.$user['id']);?>"
-                class="px-4 py-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg shadow hover:from-red-500 hover:to-pink-500 active:scale-95 transition"
-                onclick="return confirm('Are you sure you want to delete this record?');">
-                Delete
-              </a>
-            </td>
-          </tr>
-          <?php endforeach; ?>
+          <?php if (!empty($users)): ?>
+            <?php foreach ($users as $user): ?>
+              <tr class="hover:bg-gray-700/60 transition">
+                <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
+                <td class="px-4 py-3">
+                  <?=html_escape($user['last_name'] ?? $user['lastname'] ?? ''); ?>
+                </td>
+                <td class="px-4 py-3">
+                  <?=html_escape($user['first_name'] ?? $user['firstname'] ?? ''); ?>
+                </td>
+                <td class="px-4 py-3"><?=html_escape($user['email'] ?? ''); ?></td>
+                <td class="px-4 py-3 text-center space-x-2">
+                  <a href="<?=site_url('users/update/'.$user['id']);?>"
+                    class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
+                    Update
+                  </a>
+                  <a href="<?=site_url('users/delete/'.$user['id']);?>"
+                    class="px-4 py-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg shadow hover:from-red-500 hover:to-pink-500 active:scale-95 transition"
+                    onclick="return confirm('Are you sure you want to delete this record?');">
+                    Delete
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="5" class="px-4 py-3 text-center text-gray-400">No users found.</td>
+            </tr>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>
