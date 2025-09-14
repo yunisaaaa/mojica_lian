@@ -1,296 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Data Grid | System Console</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /*
-        -- CSS Variables for a centralized theme --
-        */
-        :root {
-            --color-bg-primary: #0a0a0a;
-            --color-bg-secondary: rgba(18, 18, 18, 0.7);
-            --color-text-primary: #f0f0f0;
-            --color-accent-neon: #00ff80;
-            --color-accent-pink: #ff3366;
-            --color-border: #333;
-            --color-input-bg: #181818;
-            --color-table-header-bg: #1e1e1e;
-            --color-table-row-hover: #1e1e1e;
-            --font-display: 'Orbitron', sans-serif;
-            --font-mono: 'Roboto Mono', monospace;
-            --shadow-neon: 0 0 10px rgba(0, 255, 128, 0.5);
-            --shadow-neon-pink: 0 0 10px rgba(255, 51, 102, 0.5);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Data Grid | System Console</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg-primary: #0a0f14;
+      --color-bg-card: rgba(20, 30, 40, 0.85);
+      --color-text-primary: #e5e5e5;
+      --color-accent-neon: #00ff9f;
+      --color-accent-pink: #ff3c7d;
+      --color-border: #1f2a35;
+      --font-display: 'Orbitron', sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+      --shadow-neon: 0 0 12px rgba(0, 255, 159, 0.4);
+    }
 
-        /*
-        -- Base & Body Styles --
-        */
-        body {
-            background-color: var(--color-bg-primary);
-            color: var(--color-text-primary);
-            font-family: var(--font-mono);
-            margin: 0;
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-image:
-                linear-gradient(to right, rgba(0, 255, 128, 0.07) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 255, 128, 0.07) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: var(--font-mono);
+      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-        /*
-        -- Main Container --
-        */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 2rem;
-            background: var(--color-bg-secondary);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-neon);
-            padding: 2.5rem;
-            border-radius: 12px;
-            position: relative;
-        }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-neon);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+    }
 
-        /*
-        -- Heading --
-        */
-        h1 {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--color-accent-neon);
-            text-shadow: var(--shadow-neon);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--color-accent-neon);
+      text-shadow: 0 0 10px var(--color-accent-neon);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-        /*
-        -- Search Box --
-        */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
+    .search-container {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
 
-        #searchBox {
-            width: 100%;
-            max-width: 350px;
-            padding: 0.7rem 1rem;
-            border-radius: 6px;
-            border: 1px solid var(--color-border);
-            background: var(--color-input-bg);
-            color: var(--color-text-primary);
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
+    #searchBox {
+      width: 100%;
+      max-width: 350px;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      background: rgba(15, 20, 25, 0.9);
+      color: var(--color-text-primary);
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
 
-        #searchBox:focus {
-            outline: none;
-            border-color: var(--color-accent-neon);
-            box-shadow: 0 0 5px var(--color-accent-neon);
-        }
+    #searchBox:focus {
+      outline: none;
+      border-color: var(--color-accent-neon);
+      box-shadow: 0 0 8px var(--color-accent-neon);
+    }
 
-        /*
-        -- Responsive Table Wrapper --
-        */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+    .table-responsive {
+      overflow-x: auto;
+    }
 
-        /*
-        -- Table Styles --
-        */
-        table {
-            width: 100%;
-            min-width: 600px; /* Ensures columns are not too narrow */
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
-            border-radius: 8px;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-        th, td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--color-border);
-        }
+    thead {
+      background: rgba(0, 255, 159, 0.08);
+    }
 
-        thead {
-            background-color: var(--color-table-header-bg);
-        }
-        
-        th {
-            font-weight: 700;
-            color: var(--color-accent-neon);
-            text-transform: uppercase;
-        }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
 
-        tr {
-            transition: background-color 0.3s ease;
-        }
-        
-        tbody tr:hover {
-            background-color: var(--color-table-row-hover);
-            box-shadow: inset 2px 0 0 0 var(--color-accent-neon);
-        }
+    th {
+      font-family: var(--font-display);
+      color: var(--color-accent-neon);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        /* -- Action Links --
-        */
-        .action-links {
-            white-space: nowrap;
-        }
+    tbody tr {
+      transition: background 0.3s ease;
+    }
 
-        .action-links a {
-            text-decoration: none;
-            color: var(--color-accent-neon);
-            font-weight: 700;
-            padding: 0.25rem 0.5rem;
-            border: 1px solid transparent;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        .action-links a:hover {
-            border-color: var(--color-accent-neon);
-            box-shadow: 0 0 5px var(--color-accent-neon);
-        }
+    tbody tr:hover {
+      background: rgba(0, 255, 159, 0.05);
+    }
 
-        .action-links a.delete-link {
-            color: var(--color-accent-pink);
-        }
-        
-        .action-links a.delete-link:hover {
-            border-color: var(--color-accent-pink);
-            box-shadow: 0 0 5px var(--color-accent-pink);
-        }
+    .action-links a {
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: 0.3s;
+      margin-right: 0.4rem;
+    }
 
-        /*
-        -- Pagination --
-        */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin: 2rem 0 1rem 0;
-        }
+    .action-links a:first-child {
+      color: var(--color-accent-neon);
+      border: 1px solid var(--color-accent-neon);
+    }
 
-        .pagination-container button {
-            margin: 0 0.25rem;
-            padding: 0.5rem 0.8rem;
-            border: 1px solid var(--color-accent-neon);
-            background-color: transparent;
-            color: var(--color-accent-neon);
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-        }
+    .action-links a:first-child:hover {
+      background: var(--color-accent-neon);
+      color: #0a0f14;
+      box-shadow: 0 0 10px var(--color-accent-neon);
+    }
 
-        .pagination-container button:hover:not(:disabled) {
-            background-color: var(--color-accent-neon);
-            color: var(--color-bg-primary);
-            box-shadow: 0 0 10px var(--color-accent-neon);
-        }
+    .action-links .delete-link {
+      color: var(--color-accent-pink);
+      border: 1px solid var(--color-accent-pink);
+    }
 
-        .pagination-container button:disabled {
-            border-color: #555;
-            color: #555;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
+    .action-links .delete-link:hover {
+      background: var(--color-accent-pink);
+      color: #0a0f14;
+      box-shadow: 0 0 10px var(--color-accent-pink);
+    }
 
-        .pagination-container button.active {
-            background-color: var(--color-accent-neon);
-            color: var(--color-bg-primary);
-            font-weight: bold;
-        }
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
 
-        /* -- Create Record Button --
-        */
-        .create-record-btn {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
-            background-color: transparent;
-            color: var(--color-accent-neon);
-            text-decoration: none;
-            border: 2px solid var(--color-accent-neon);
-            border-radius: 8px;
-            font-weight: 700;
-            font-family: var(--font-display);
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-            text-shadow: 0 0 5px var(--color-accent-neon);
-            box-shadow: 0 0 10px rgba(0, 255, 128, 0.4);
-            text-transform: uppercase;
-        }
+    .pagination-container button {
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--color-accent-neon);
+      background: transparent;
+      color: var(--color-accent-neon);
+      font-family: var(--font-mono);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        .create-record-btn:hover {
-            background-color: var(--color-accent-neon);
-            color: var(--color-bg-primary);
-            box-shadow: 0 0 20px var(--color-accent-neon);
-        }
-    </style>
+    .pagination-container button:hover:not(:disabled),
+    .pagination-container button.active {
+      background: var(--color-accent-neon);
+      color: #0a0f14;
+      box-shadow: 0 0 10px var(--color-accent-neon);
+    }
+
+    .pagination-container button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .create-record-btn {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.9rem 1.6rem;
+      font-family: var(--font-display);
+      font-weight: bold;
+      color: var(--color-accent-neon);
+      border: 2px solid var(--color-accent-neon);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: 0.3s ease;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px var(--color-accent-neon);
+    }
+
+    .create-record-btn:hover {
+      background: var(--color-accent-neon);
+      color: #0a0f14;
+      box-shadow: 0 0 15px var(--color-accent-neon);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>User Data Grid // Access Terminal</h1>
-        
-        <div class="search-container">
-            <input type="text" id="searchBox" placeholder="Search records...">
-        </div>
-        
-        <div class="table-responsive">
-            <table id="studentsTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach (html_escape($users) as $user):?>
-                        <tr>
-                            <td><?=$user['id'];?></td>
-                            <td><?=$user['last_name'];?></td>
-                            <td><?=$user['first_name'];?></td>
-                            <td><?=$user['email'];?></td>
-                            <td class="action-links">
-                                <a href="<?=site_url('users/update/'.$user['id']);?>">Update</a> |
-                                <a href="<?=site_url('users/delete/'.$user['id']);?>" class="delete-link" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-                </tbody>
-            </table>
-        </div>
-        
-        <div id="pagination" class="pagination-container"></div>
-        
-        <div style="text-align: center;">
-            <a href="<?=site_url('users/create');?>" class="create-record-btn">Create New Record</a>
-        </div>
+  <div class="container">
+    <h1>User Data Grid // Access Terminal</h1>
+
+    <div class="search-container">
+      <input type="text" id="searchBox" placeholder="Search records...">
     </div>
 
-    <script>
-    // Live search and pagination (client-side)
+    <div class="table-responsive">
+      <table id="studentsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach (html_escape($users) as $user): ?>
+            <tr>
+              <td><?=$user['id'];?></td>
+              <td><?=$user['last_name'];?></td>
+              <td><?=$user['first_name'];?></td>
+              <td><?=$user['email'];?></td>
+              <td class="action-links">
+                <a href="<?=site_url('users/update/'.$user['id']);?>">Update</a>
+                <a href="<?=site_url('users/delete/'.$user['id']);?>" class="delete-link" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="pagination" class="pagination-container"></div>
+
+    <a href="<?=site_url('users/create');?>" class="create-record-btn">Create New Record</a>
+  </div>
+
+  <script>
     const searchBox = document.getElementById('searchBox');
     const table = document.getElementById('studentsTable');
     const tbody = table.querySelector('tbody');
@@ -300,58 +250,56 @@
     let currentPage = 1;
 
     function filterRows() {
-        const query = searchBox.value.trim().toLowerCase();
-        return rows.filter(row => {
-            return Array.from(row.children).some(cell =>
-                cell.textContent.toLowerCase().includes(query)
-            );
-        });
+      const query = searchBox.value.trim().toLowerCase();
+      return rows.filter(row => {
+        return Array.from(row.children).some(cell =>
+          cell.textContent.toLowerCase().includes(query)
+        );
+      });
     }
 
     function renderTable(page = 1) {
-        const filtered = filterRows();
-        const total = filtered.length;
-        const totalPages = Math.ceil(total / pageSize) || 1;
-        if (page > totalPages) page = totalPages;
-        currentPage = page;
-        tbody.innerHTML = '';
-        const start = (page - 1) * pageSize;
-        const end = start + pageSize;
-        filtered.slice(start, end).forEach(row => tbody.appendChild(row));
-        renderPagination(totalPages);
+      const filtered = filterRows();
+      const total = filtered.length;
+      const totalPages = Math.ceil(total / pageSize) || 1;
+      if (page > totalPages) page = totalPages;
+      currentPage = page;
+      tbody.innerHTML = '';
+      const start = (page - 1) * pageSize;
+      const end = start + pageSize;
+      filtered.slice(start, end).forEach(row => tbody.appendChild(row));
+      renderPagination(totalPages);
     }
 
     function renderPagination(totalPages) {
-        let html = '';
-        const maxButtons = 5;
-        let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-        let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+      let html = '';
+      const maxButtons = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+      let endPage = Math.min(totalPages, startPage + maxButtons - 1);
 
-        if (endPage - startPage + 1 < maxButtons) {
-            startPage = Math.max(1, endPage - maxButtons + 1);
-        }
+      if (endPage - startPage + 1 < maxButtons) {
+        startPage = Math.max(1, endPage - maxButtons + 1);
+      }
 
-        // Always render pagination
-        html += <button onclick="gotoPage(1)" ${currentPage===1?'disabled':''}>&laquo;</button>;
-        html += <button onclick="gotoPage(${currentPage-1})" ${currentPage===1?'disabled':''}>&lt;</button>;
-        
-        for (let i = startPage; i <= endPage; i++) {
-            html += <button onclick="gotoPage(${i})" class="${i===currentPage?'active':''}">${i}</button>;
-        }
+      html += `<button onclick="gotoPage(1)" ${currentPage===1?'disabled':''}>&laquo;</button>`;
+      html += `<button onclick="gotoPage(${currentPage-1})" ${currentPage===1?'disabled':''}>&lt;</button>`;
 
-        html += <button onclick="gotoPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>&gt;</button>;
-        html += <button onclick="gotoPage(${totalPages})" ${currentPage===totalPages?'disabled':''}>&raquo;</button>;
-        
-        pagination.innerHTML = html;
+      for (let i = startPage; i <= endPage; i++) {
+        html += `<button onclick="gotoPage(${i})" class="${i===currentPage?'active':''}">${i}</button>`;
+      }
+
+      html += `<button onclick="gotoPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>&gt;</button>`;
+      html += `<button onclick="gotoPage(${totalPages})" ${currentPage===totalPages?'disabled':''}>&raquo;</button>`;
+
+      pagination.innerHTML = html;
     }
 
     function gotoPage(page) {
-        renderTable(page);
+      renderTable(page);
     }
 
     searchBox.addEventListener('input', () => renderTable(1));
-    // Initial render
     renderTable(1);
-    </script>
+  </script>
 </body>
 </html>
