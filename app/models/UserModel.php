@@ -10,11 +10,12 @@ class UserModel extends Model {
         parent::__construct();
     }
 
-    // 🔹 Get students with pagination
+    // 🔹 Get students with pagination (fixed)
     public function getStudents($limit, $offset)
     {
         return $this->db->table($this->table)
-                        ->limit($limit, $offset)
+                        ->order_by('id', 'ASC')     // siguraduhin na nakaayos
+                        ->limit($limit, $offset)    // limit = ilan, offset = start
                         ->get_all();
     }
 
