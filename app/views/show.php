@@ -3,28 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Show Users</title>
+  <title>User Records</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
 
-  <!-- Debug Section (REMOVE LATER) -->
-  <div class="w-full max-w-4xl bg-black text-green-400 p-4 mb-6 rounded-lg overflow-auto text-sm">
-    <strong>DEBUG: Users Array</strong>
-    <pre><?php print_r($users); ?></pre>
-  </div>
-
   <!-- User Table -->
   <div class="w-full max-w-6xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700 relative overflow-hidden">
-
-    <!-- Glow border effect -->
-    <div class="absolute inset-0 rounded-2xl border border-purple-500/40 pointer-events-none"></div>
-
-    <!-- Futuristic background shapes -->
-    <div class="absolute -top-10 -left-10 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full opacity-20 blur-2xl"></div>
-    <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-gradient-to-tr from-pink-500 to-purple-700 rounded-full opacity-20 blur-2xl"></div>
-    <div class="absolute top-1/3 -right-8 w-16 h-16 bg-blue-500 rounded-lg opacity-30 rotate-12 blur-lg"></div>
-    <div class="absolute bottom-1/4 -left-6 w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-40 blur-md"></div>
 
     <!-- Header -->
     <div class="flex justify-between items-center mb-6 relative z-10">
@@ -54,13 +39,9 @@
             <?php foreach ($users as $user): ?>
               <tr class="hover:bg-gray-700/60 transition">
                 <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
-                <td class="px-4 py-3">
-                  <?=html_escape($user['last_name'] ?? $user['lastname'] ?? ''); ?>
-                </td>
-                <td class="px-4 py-3">
-                  <?=html_escape($user['first_name'] ?? $user['firstname'] ?? ''); ?>
-                </td>
-                <td class="px-4 py-3"><?=html_escape($user['email'] ?? ''); ?></td>
+                <td class="px-4 py-3"><?=html_escape($user['last_name']);?></td>
+                <td class="px-4 py-3"><?=html_escape($user['first_name']);?></td>
+                <td class="px-4 py-3"><?=html_escape($user['email']);?></td>
                 <td class="px-4 py-3 text-center space-x-2">
                   <a href="<?=site_url('users/update/'.$user['id']);?>"
                     class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
@@ -76,7 +57,7 @@
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="5" class="px-4 py-3 text-center text-gray-400">No users found.</td>
+              <td colspan="5" class="px-4 py-3 text-center text-gray-400">No records found</td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -92,31 +73,15 @@
         </a>
       <?php endif; ?>
 
-      <?php
-        $range = 2; // number of pages to show around current
-        $ellipsis_before = false;
-        $ellipsis_after = false;
-
-        for ($i = 1; $i <= $total_pages; $i++):
-          if ($i == 1 || $i == $total_pages || ($i >= $current_page - $range && $i <= $current_page + $range)):
-      ?>
-            <?php if ($i == $current_page): ?>
-              <span class="px-4 py-2 bg-purple-600 text-white font-bold rounded-lg">
-                <?= $i; ?>
-              </span>
-            <?php else: ?>
-              <a href="?page=<?= $i; ?>"
-                class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-                <?= $i; ?>
-              </a>
-            <?php endif; ?>
-          <?php elseif ($i < $current_page && !$ellipsis_before): ?>
-            <span class="px-3 py-2 text-gray-400">…</span>
-            <?php $ellipsis_before = true; ?>
-          <?php elseif ($i > $current_page && !$ellipsis_after): ?>
-            <span class="px-3 py-2 text-gray-400">…</span>
-            <?php $ellipsis_after = true; ?>
-          <?php endif; ?>
+      <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+        <?php if ($i == $current_page): ?>
+          <span class="px-4 py-2 bg-purple-600 text-white font-bold rounded-lg"><?= $i; ?></span>
+        <?php else: ?>
+          <a href="?page=<?= $i; ?>"
+            class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
+            <?= $i; ?>
+          </a>
+        <?php endif; ?>
       <?php endfor; ?>
 
       <?php if ($current_page < $total_pages): ?>
