@@ -10,15 +10,17 @@ class UserModel extends Model {
         parent::__construct();
     }
 
-    // ✅ Get records with limit + offset for pagination
-    public function getStudents($limit, $offset) {
+    // 🔹 Get students with pagination
+    public function getStudents($limit, $offset)
+    {
         return $this->db->table($this->table)
                         ->limit($limit, $offset)
                         ->get_all();
     }
 
-    // ✅ Count all rows
-    public function getStudentCount() {
+    // 🔹 Count all students
+    public function getStudentCount()
+    {
         return $this->db->table($this->table)->count();
     }
 }
