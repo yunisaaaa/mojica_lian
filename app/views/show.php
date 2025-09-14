@@ -67,7 +67,7 @@
     <div class="text-center mt-8 relative z-10">
       <a href="<?= site_url('users/create'); ?>" 
          class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-semibold hover:from-green-400 hover:to-emerald-500 transition">
-        + Create User
+         Create New User
       </a>
     </div>
   </div>
