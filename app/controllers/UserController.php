@@ -9,7 +9,7 @@ class UserController extends Controller {
         $this->call->model('UserModel');
     }
 
-    public function show(){
+    public function show() {
         // 🔹 Pagination setup
         $limit = 5; // ilang users per page
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -29,16 +29,18 @@ class UserController extends Controller {
     }
 
     public function create() {
-        if($this->io->method() == 'post'){
+        if ($this->io->method() == 'post') {
             $lastname = $this->io->post('last_name');
             $firstname = $this->io->post('first_name');
             $email = $this->io->post('email');
+
             $data = array(
                 'last_name' => $lastname,
                 'first_name' => $firstname,
                 'email' => $email
             );
-            if($this->UserModel->insert($data)){
+
+            if ($this->UserModel->insert($data)) {
                 redirect('users/show');
             } else {
                 echo 'Something went wrong';
@@ -50,16 +52,19 @@ class UserController extends Controller {
 
     public function update($id) {
         $data['user'] = $this->UserModel->find($id);
-        if($this->io->method() == 'post'){
+
+        if ($this->io->method() == 'post') {
             $lastname = $this->io->post('last_name');
             $firstname = $this->io->post('first_name');
             $email = $this->io->post('email');
+
             $data = array(
                 'last_name' => $lastname,
                 'first_name' => $firstname,
                 'email' => $email
             );
-            if($this->UserModel->update($id, $data)){
+
+            if ($this->UserModel->update($id, $data)) {
                 redirect('users/show');
             } else {
                 echo 'Something went wrong';
@@ -69,8 +74,8 @@ class UserController extends Controller {
         }
     }
 
-    public function delete($id){
-        if($this->UserModel->delete($id)){
+    public function delete($id) {
+        if ($this->UserModel->delete($id)) {
             redirect('users/show');
         } else {
             echo 'Something went wrong';

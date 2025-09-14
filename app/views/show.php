@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Records</title>
+  <title>Show Users</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
@@ -35,29 +35,29 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-700 bg-gray-800/60">
-          <?php if (!empty($users)): ?>
+          <?php if(!empty($users)): ?>
             <?php foreach ($users as $user): ?>
-              <tr class="hover:bg-gray-700/60 transition">
-                <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
-                <td class="px-4 py-3"><?=html_escape($user['last_name']);?></td>
-                <td class="px-4 py-3"><?=html_escape($user['first_name']);?></td>
-                <td class="px-4 py-3"><?=html_escape($user['email']);?></td>
-                <td class="px-4 py-3 text-center space-x-2">
-                  <a href="<?=site_url('users/update/'.$user['id']);?>"
-                    class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
-                    Update
-                  </a>
-                  <a href="<?=site_url('users/delete/'.$user['id']);?>"
-                    class="px-4 py-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg shadow hover:from-red-500 hover:to-pink-500 active:scale-95 transition"
-                    onclick="return confirm('Are you sure you want to delete this record?');">
-                    Delete
-                  </a>
-                </td>
-              </tr>
+            <tr class="hover:bg-gray-700/60 transition">
+              <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
+              <td class="px-4 py-3"><?=html_escape($user['last_name']);?></td>
+              <td class="px-4 py-3"><?=html_escape($user['first_name']);?></td>
+              <td class="px-4 py-3"><?=html_escape($user['email']);?></td>
+              <td class="px-4 py-3 text-center space-x-2">
+                <a href="<?=site_url('users/update/'.$user['id']);?>"
+                  class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
+                  Update
+                </a>
+                <a href="<?=site_url('users/delete/'.$user['id']);?>"
+                  class="px-4 py-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg shadow hover:from-red-500 hover:to-pink-500 active:scale-95 transition"
+                  onclick="return confirm('Are you sure you want to delete this record?');">
+                  Delete
+                </a>
+              </td>
+            </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="5" class="px-4 py-3 text-center text-gray-400">No records found</td>
+              <td colspan="5" class="text-center py-4 text-gray-400">No users found</td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -67,31 +67,21 @@
     <!-- Pagination -->
     <div class="flex justify-center mt-6 space-x-2">
       <?php if ($current_page > 1): ?>
-        <a href="?page=<?= $current_page - 1; ?>"
-          class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-          ‹ Prev
-        </a>
+        <a href="?page=<?= $current_page - 1; ?>" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">Prev</a>
       <?php endif; ?>
 
       <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <?php if ($i == $current_page): ?>
-          <span class="px-4 py-2 bg-purple-600 text-white font-bold rounded-lg"><?= $i; ?></span>
-        <?php else: ?>
-          <a href="?page=<?= $i; ?>"
-            class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-            <?= $i; ?>
-          </a>
-        <?php endif; ?>
+        <a href="?page=<?= $i; ?>" 
+          class="px-3 py-1 rounded <?= ($i == $current_page) ? 'bg-indigo-600 text-white' : 'bg-gray-700 hover:bg-gray-600'; ?>">
+          <?= $i; ?>
+        </a>
       <?php endfor; ?>
 
       <?php if ($current_page < $total_pages): ?>
-        <a href="?page=<?= $current_page + 1; ?>"
-          class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
-          Next ›
-        </a>
+        <a href="?page=<?= $current_page + 1; ?>" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">Next</a>
       <?php endif; ?>
     </div>
-  </div>
 
+  </div>
 </body>
 </html>
