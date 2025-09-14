@@ -1,87 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Show Users</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <title>Students</title>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
+<body>
+    <h2>Student List</h2>
 
-  <!-- User Table -->
-  <div class="w-full max-w-6xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700 relative overflow-hidden">
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6 relative z-10">
-      <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 drop-shadow-lg">
-        👤 User Records
-      </h1>
-      <a href="<?=site_url('users/create');?>"
-        class="px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:from-indigo-400 hover:to-purple-500 active:scale-95 transition">
-        Create New User
-      </a>
-    </div>
-
-    <!-- Table -->
-    <div class="overflow-x-auto rounded-xl border border-gray-700 shadow relative z-10">
-      <table class="w-full border-collapse">
-        <thead class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white">
-          <tr>
-            <th class="px-4 py-3 text-left text-sm font-semibold">ID</th>
-            <th class="px-4 py-3 text-left text-sm font-semibold">Last Name</th>
-            <th class="px-4 py-3 text-left text-sm font-semibold">First Name</th>
-            <th class="px-4 py-3 text-left text-sm font-semibold">Email</th>
-            <th class="px-4 py-3 text-center text-sm font-semibold">Action</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-700 bg-gray-800/60">
-          <?php if(!empty($users)): ?>
+        <?php if (!empty($users)): ?>
             <?php foreach ($users as $user): ?>
-            <tr class="hover:bg-gray-700/60 transition">
-              <td class="px-4 py-3"><?=html_escape($user['id']);?></td>
-              <td class="px-4 py-3"><?=html_escape($user['last_name']);?></td>
-              <td class="px-4 py-3"><?=html_escape($user['first_name']);?></td>
-              <td class="px-4 py-3"><?=html_escape($user['email']);?></td>
-              <td class="px-4 py-3 text-center space-x-2">
-                <a href="<?=site_url('users/update/'.$user['id']);?>"
-                  class="px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg shadow hover:from-yellow-400 hover:to-orange-400 active:scale-95 transition">
-                  Update
-                </a>
-                <a href="<?=site_url('users/delete/'.$user['id']);?>"
-                  class="px-4 py-1 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg shadow hover:from-red-500 hover:to-pink-500 active:scale-95 transition"
-                  onclick="return confirm('Are you sure you want to delete this record?');">
-                  Delete
-                </a>
-              </td>
-            </tr>
+                <tr>
+                    <td><?= $user['id']; ?></td>
+                    <td><?= $user['last_name']; ?></td>
+                    <td><?= $user['first_name']; ?></td>
+                    <td><?= $user['email']; ?></td>
+                    <td>
+                        <a href="<?= site_url('users/update/'.$user['id']); ?>">Edit</a> | 
+                        <a href="<?= site_url('users/delete/'.$user['id']); ?>">Delete</a>
+                    </td>
+                </tr>
             <?php endforeach; ?>
-          <?php else: ?>
+        <?php else: ?>
             <tr>
-              <td colspan="5" class="text-center py-4 text-gray-400">No users found</td>
+                <td colspan="5">No students found</td>
             </tr>
-          <?php endif; ?>
-        </tbody>
-      </table>
-    </div>
+        <?php endif; ?>
+    </table>
 
     <!-- Pagination -->
-    <div class="flex justify-center mt-6 space-x-2">
-      <?php if ($current_page > 1): ?>
-        <a href="?page=<?= $current_page - 1; ?>" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">Prev</a>
-      <?php endif; ?>
-
-      <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <a href="?page=<?= $i; ?>" 
-          class="px-3 py-1 rounded <?= ($i == $current_page) ? 'bg-indigo-600 text-white' : 'bg-gray-700 hover:bg-gray-600'; ?>">
-          <?= $i; ?>
-        </a>
-      <?php endfor; ?>
-
-      <?php if ($current_page < $total_pages): ?>
-        <a href="?page=<?= $current_page + 1; ?>" class="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600">Next</a>
-      <?php endif; ?>
+    <div>
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="<?= site_url('users/show?page='.$i); ?>" 
+                style="<?= ($i == $current_page) ? 'font-weight:bold;' : '' ?>">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
     </div>
-
-  </div>
 </body>
 </html>
