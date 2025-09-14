@@ -66,6 +66,37 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 space-x-2 relative z-10">
+      <?php if ($current_page > 1): ?>
+        <a href="?page=<?= $current_page - 1; ?>"
+          class="px-4 py-2 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg shadow hover:from-gray-600 hover:to-gray-700 active:scale-95 transition">
+          ‹ Prev
+        </a>
+      <?php endif; ?>
+
+      <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+        <?php if ($i == $current_page): ?>
+          <span class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow">
+            <?= $i; ?>
+          </span>
+        <?php else: ?>
+          <a href="?page=<?= $i; ?>"
+            class="px-4 py-2 bg-gray-700 text-white rounded-lg shadow hover:bg-gray-600 active:scale-95 transition">
+            <?= $i; ?>
+          </a>
+        <?php endif; ?>
+      <?php endfor; ?>
+
+      <?php if ($current_page < $total_pages): ?>
+        <a href="?page=<?= $current_page + 1; ?>"
+          class="px-4 py-2 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg shadow hover:from-gray-600 hover:to-gray-700 active:scale-95 transition">
+          Next ›
+        </a>
+      <?php endif; ?>
+    </div>
+
   </div>
 
 </body>

@@ -1,11 +1,6 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-/**
- * Controller: UserController
- * 
- * Automatically generated via CLI.
- */
 class UserController extends Controller {
     public function __construct()
     {
@@ -15,7 +10,21 @@ class UserController extends Controller {
     }
 
     public function show(){
-        $data['users'] = $this->UserModel->all();
+        // 🔹 Pagination setup
+        $limit = 5; // ilang users per page
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+
+        $offset = ($page - 1) * $limit;
+
+        // 🔹 Get users with pagination
+        $data['users'] = $this->UserModel->getStudents($limit, $offset);
+
+        // 🔹 Count total users
+        $total_users = $this->UserModel->getStudentCount();
+        $data['total_pages'] = ceil($total_users / $limit);
+        $data['current_page'] = $page;
+
         $this->call->view('show', $data);
     }
 
@@ -37,7 +46,6 @@ class UserController extends Controller {
         } else {
             $this->call->view('create');
         }
-        
     }
 
     public function update($id) {
