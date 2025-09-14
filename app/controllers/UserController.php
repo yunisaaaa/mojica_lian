@@ -15,7 +15,7 @@ class UserController extends Controller {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
 
-        $offset = ($page - 1) * $limit = 5;
+        $offset = ($page - 1) * $limit ;
 
         // 🔹 Get users with pagination
         $data['users'] = $this->UserModel->getStudents($limit, $offset);
