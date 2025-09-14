@@ -1,6 +1,11 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
+/**
+ * Model: UserModel
+ * 
+ * Automatically generated via CLI.
+ */
 class UserModel extends Model {
     protected $table = 'students';
     protected $primary_key = 'id';
@@ -8,20 +13,5 @@ class UserModel extends Model {
     public function __construct()
     {
         parent::__construct();
-    }
-
-    // 🔹 Get students with pagination (LavaLust style)
-    public function getStudents($limit, $offset)
-    {
-        return $this->db->table($this->table)
-                        ->order_by('id', 'ASC')     // para mauna si ID=1
-                        ->limit($limit, $offset)    // LavaLust format
-                        ->get_all();
-    }
-
-    // 🔹 Count all students
-    public function getStudentCount()
-    {
-        return $this->db->table($this->table)->count();
     }
 }
