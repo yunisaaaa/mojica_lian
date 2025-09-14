@@ -10,12 +10,12 @@ class UserModel extends Model {
         parent::__construct();
     }
 
-    // 🔹 Get students with pagination (fixed)
+    // 🔹 Get students with pagination (LavaLust style)
     public function getStudents($limit, $offset)
     {
         return $this->db->table($this->table)
-                        ->order_by('id', 'ASC')     // siguraduhin na nakaayos
-                        ->limit($limit, $offset)    // limit = ilan, offset = start
+                        ->order_by('id', 'ASC')     // para mauna si ID=1
+                        ->limit($limit, $offset)    // LavaLust format
                         ->get_all();
     }
 
