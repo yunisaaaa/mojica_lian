@@ -21,12 +21,6 @@ class UserModel extends Model {
         return $this->db->table('students')->insert($data);
     }
 
-    // 🔹 Find by ID
-    public function find($id) {
-        return $this->db->table('students')
-                        ->where('id', $id)
-                        ->get();
-    }
 
     // 🔹 Update
     public function update($id, $data) {
