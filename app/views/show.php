@@ -40,10 +40,10 @@
           <?php if (!empty($users) && is_array($users)): ?>
             <?php foreach ($users as $user): ?>
               <tr class="hover:bg-gray-800/40 transition">
-                <td class="px-4 py-3"><?= htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8'); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['last_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['first_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['id']); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['last_name']); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['first_name']); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['email']); ?></td>
                 <td class="px-4 py-3 text-center space-x-2">
                   <a href="<?= site_url('users/update/'.$user['id']); ?>" 
                      class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition">
