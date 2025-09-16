@@ -37,25 +37,31 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-700">
-          <?php foreach (html_escape($users) as $user): ?>
-            <tr class="hover:bg-gray-800/40 transition">
-              <td class="px-4 py-3"><?= $user['id']; ?></td>
-              <td class="px-4 py-3"><?= $user['last_name']; ?></td>
-              <td class="px-4 py-3"><?= $user['first_name']; ?></td>
-              <td class="px-4 py-3"><?= $user['email']; ?></td>
-              <td class="px-4 py-3 text-center space-x-2">
-                <a href="<?= site_url('users/update/'.$user['id']); ?>" 
-                   class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition">
-                  Update
-                </a>
-                <a href="<?= site_url('users/delete/'.$user['id']); ?>" 
-                   onclick="return confirm('Are you sure you want to delete this record?');"
-                   class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-400 hover:to-red-500 transition">
-                   Delete
-                </a>
-              </td>
+          <?php if (!empty($users) && is_array($users)): ?>
+            <?php foreach ($users as $user): ?>
+              <tr class="hover:bg-gray-800/40 transition">
+                <td class="px-4 py-3"><?= htmlspecialchars($user['id'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['last_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['first_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="px-4 py-3"><?= htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="px-4 py-3 text-center space-x-2">
+                  <a href="<?= site_url('users/update/'.$user['id']); ?>" 
+                     class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition">
+                    Update
+                  </a>
+                  <a href="<?= site_url('users/delete/'.$user['id']); ?>" 
+                     onclick="return confirm('Are you sure you want to delete this record?');"
+                     class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-400 hover:to-red-500 transition">
+                     Delete
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr>
+              <td colspan="5" class="text-center py-3">No users found</td>
             </tr>
-          <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>
