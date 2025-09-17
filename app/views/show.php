@@ -1,3 +1,48 @@
+<?php
+// Database connection (adjust credentials to your DB)
+$conn = new mysqli("localhost", "root", "", "your_db");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Pagination setup
+$page   = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$limit  = 5;
+$offset = ($page - 1) * $limit;
+
+// Search filter
+$search = isset($_GET['search']) ? trim($_GET['search']) : "";
+$where  = "";
+$params = [];
+$types  = "";
+
+if ($search) {
+    $where = "WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?";
+    $like  = "%$search%";
+    $params = [$like, $like, $like];
+    $types  = "sss";
+}
+
+// Count total
+$sqlCount = "SELECT COUNT(*) as total FROM users $where";
+$stmt = $conn->prepare($sqlCount);
+if ($search) $stmt->bind_param($types, ...$params);
+$stmt->execute();
+$totalRows = $stmt->get_result()->fetch_assoc()['total'];
+$totalPages = ceil($totalRows / $limit);
+
+// Fetch data
+$sql = "SELECT * FROM users $where LIMIT ? OFFSET ?";
+$stmt = $conn->prepare($sql);
+if ($search) {
+    $stmt->bind_param($types . "ii", ...$params, $limit, $offset);
+} else {
+    $stmt->bind_param("ii", $limit, $offset);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$users  = $result->fetch_all(MYSQLI_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +65,11 @@
 
     <!-- Search -->
     <div class="mb-6 flex justify-center relative z-10">
-      <input id="searchBox" type="text" placeholder="Search users..."
-        class="w-full max-w-sm rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/70">
+      <form method="get" class="w-full max-w-sm">
+        <input type="text" name="search" value="<?= htmlspecialchars($search) ?>"
+          placeholder="Search users..."
+          class="w-full rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/70">
+      </form>
     </div>
 
     <!-- Users Table -->
@@ -37,7 +85,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-700">
-          <?php if (!empty($users) && is_array($users)): ?>
+          <?php if (!empty($users)): ?>
             <?php foreach ($users as $user): ?>
               <tr class="hover:bg-gray-800/40 transition">
                 <td class="px-4 py-3"><?= htmlspecialchars($user['id']); ?></td>
@@ -45,14 +93,14 @@
                 <td class="px-4 py-3"><?= htmlspecialchars($user['first_name']); ?></td>
                 <td class="px-4 py-3"><?= htmlspecialchars($user['email']); ?></td>
                 <td class="px-4 py-3 text-center space-x-2">
-                  <a href="<?= site_url('users/update/'.$user['id']); ?>" 
+                  <a href="update.php?id=<?= $user['id']; ?>"
                      class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition">
                     Update
                   </a>
-                  <a href="<?= site_url('users/delete/'.$user['id']); ?>" 
+                  <a href="delete.php?id=<?= $user['id']; ?>"
                      onclick="return confirm('Are you sure you want to delete this record?');"
                      class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-400 hover:to-red-500 transition">
-                     Delete
+                    Delete
                   </a>
                 </td>
               </tr>
@@ -67,80 +115,32 @@
     </div>
 
     <!-- Pagination -->
-    <div id="pagination" class="flex justify-center mt-6 gap-2 flex-wrap relative z-10"></div>
+    <div id="pagination" class="flex justify-center mt-6 gap-2 flex-wrap relative z-10">
+      <?php if ($page > 1): ?>
+        <a href="?page=1&search=<?= urlencode($search) ?>" class="px-3 py-1 border rounded bg-gray-800">«</a>
+        <a href="?page=<?= $page-1 ?>&search=<?= urlencode($search) ?>" class="px-3 py-1 border rounded bg-gray-800">‹</a>
+      <?php endif; ?>
+
+      <?php for ($i = max(1, $page-2); $i <= min($totalPages, $page+2); $i++): ?>
+        <a href="?page=<?= $i ?>&search=<?= urlencode($search) ?>"
+           class="px-3 py-1 border rounded <?= $i==$page ? 'bg-indigo-500 text-white' : 'bg-gray-800' ?>">
+           <?= $i ?>
+        </a>
+      <?php endfor; ?>
+
+      <?php if ($page < $totalPages): ?>
+        <a href="?page=<?= $page+1 ?>&search=<?= urlencode($search) ?>" class="px-3 py-1 border rounded bg-gray-800">›</a>
+        <a href="?page=<?= $totalPages ?>&search=<?= urlencode($search) ?>" class="px-3 py-1 border rounded bg-gray-800">»</a>
+      <?php endif; ?>
+    </div>
 
     <!-- Create button -->
     <div class="text-center mt-8 relative z-10">
-      <a href="<?= site_url('users/create'); ?>" 
+      <a href="create.php"
          class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-semibold hover:from-green-400 hover:to-emerald-500 transition">
-         Create New User
+        Create New User
       </a>
     </div>
   </div>
-
-  <script>
-    const searchBox = document.getElementById('searchBox');
-    const table = document.getElementById('studentsTable');
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    const pagination = document.getElementById('pagination');
-    const pageSize = 5;
-    let currentPage = 1;
-
-    function filterRows() {
-      const query = searchBox.value.trim().toLowerCase();
-      return rows.filter(row => {
-        return Array.from(row.children).some(cell =>
-          cell.textContent.toLowerCase().includes(query)
-        );
-      });
-    }
-
-    function renderTable(page = 1) {
-      const filtered = filterRows();
-      const total = filtered.length;
-      const totalPages = Math.ceil(total / pageSize) || 1;
-      if (page > totalPages) page = totalPages;
-      currentPage = page;
-      tbody.innerHTML = '';
-      const start = (page - 1) * pageSize;
-      const end = start + pageSize;
-      filtered.slice(start, end).forEach(row => tbody.appendChild(row));
-      renderPagination(totalPages);
-    }
-
-    function renderPagination(totalPages) {
-      pagination.innerHTML = '';
-      const maxButtons = 5;
-      let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-      let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-      if (endPage - startPage + 1 < maxButtons) startPage = Math.max(1, endPage - maxButtons + 1);
-
-      const createButton = (label, page, disabled=false, active=false) => {
-        const btn = document.createElement('button');
-        btn.textContent = label;
-        btn.disabled = disabled;
-        btn.className = `px-3 py-1 rounded-lg text-xs font-semibold transition
-          ${active ? 'bg-indigo-500 text-white shadow-md border-indigo-500' :
-                     'bg-gray-800/60 border border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white'}
-          ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`;
-        if (!disabled) btn.onclick = () => gotoPage(page);
-        return btn;
-      };
-
-      pagination.appendChild(createButton('«', 1, currentPage===1));
-      pagination.appendChild(createButton('‹', currentPage-1, currentPage===1));
-      for (let i = startPage; i <= endPage; i++) {
-        pagination.appendChild(createButton(i, i, false, i===currentPage));
-      }
-      pagination.appendChild(createButton('›', currentPage+1, currentPage===totalPages));
-      pagination.appendChild(createButton('»', totalPages, currentPage===totalPages));
-    }
-
-    function gotoPage(page) { renderTable(page); }
-
-    searchBox.addEventListener('input', () => renderTable(1));
-    renderTable(1);
-  </script>
 </body>
 </html>
