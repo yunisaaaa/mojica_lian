@@ -1,148 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Show Users</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>User Data Grid | System Console — Modern Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style>
+:root {
+  --bg: #0d0f1a;
+  --panel: rgba(255, 255, 255, 0.05);
+  --panel-2: rgba(255, 255, 255, 0.08);
+  --accent: #4f9cff;
+  --danger: #ff4d7a;
+  --muted: #a0a7b3;
+  --mono: system-ui, sans-serif;
+}
+
+/* base */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--mono);
+  background: linear-gradient(160deg, #0d0f1a, #1a1c2b);
+  color: #e3e6ee;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+
+/* container */
+.terminal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* header */
+.term-head {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 1.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.window-dots {
+  display: flex;
+  gap: 8px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: .9;
+}
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #28c840; }
+.term-title {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* layout */
+.term-body {
+  display: grid;
+  grid-template-columns: 1fr 640px;
+  min-height: 560px;
+}
+
+/* left panel */
+.left {
+  padding: 20px;
+  background: var(--panel);
+  font-size: 13px;
+  line-height: 1.55;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 12px;
+}
+.badge {
+  background: var(--panel-2);
+  padding: .35rem .55rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--accent);
+}
+.meta {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.logbox {
+  background: var(--panel-2);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.05);
+  max-height: 300px;
+  overflow: auto;
+}
+.logbox pre {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* right panel */
+.right {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.hacker-title {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.search-form {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.search-input {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-family: var(--mono);
+  outline: none;
+}
+.search-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+.search-btn {
+  background: var(--accent);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.search-btn:hover {
+  background: #3a82e6;
+}
+
+/* table */
+.table-wrap {
+  overflow: auto;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: var(--panel);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+  font-size: 14px;
+}
+thead {
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  text-align: left;
+}
+th {
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+tbody tr:hover {
+  background: rgba(255,255,255,0.04);
+}
+.empty-row td {
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  padding: 28px;
+}
+
+/* actions */
+.action-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 4px;
+}
+.action-links a.delete { color: var(--danger); }
+.action-links a:hover {
+  text-decoration: underline;
+}
+
+/* pagination & footer */
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.pagination {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border-radius: 6px;
+}
+.page-link {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.page-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.create-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.create-btn:hover {
+  background: #3a82e6;
+}
+
+/* responsive */
+@media (max-width:980px) {
+  .term-body { grid-template-columns: 1fr; }
+  .left { order: 2; border-right: none; border-top: 1px solid rgba(255,255,255,0.05); }
+  .right { order: 1; }
+  .search-form { width: 100%; }
+  .footer-row { flex-direction: column; gap: 12px; }
+}
+</style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
+<body>
 
-  <!-- Show Users Card -->
-  <div class="w-full max-w-5xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700 relative overflow-hidden">
-    
-    <!-- Glow Border -->
-    <div class="absolute inset-0 rounded-2xl border border-purple-500/40 pointer-events-none"></div>
-
-    <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 text-center mb-6 drop-shadow-lg">
-      Users List
-    </h1>
-
-    <!-- Search -->
-    <div class="mb-6 flex justify-center relative z-10">
-      <input id="searchBox" type="text" placeholder="Search users..."
-        class="w-full max-w-sm rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/70">
+<div class="terminal" role="main" aria-label="User Data Grid Terminal">
+  <div class="term-head">
+    <div class="window-dots">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
     </div>
-
-    <!-- Users Table -->
-    <div class="overflow-x-auto relative z-10">
-      <table id="studentsTable" class="w-full border-collapse rounded-lg overflow-hidden">
-        <thead>
-          <tr class="bg-gradient-to-r from-indigo-500/20 to-purple-600/20 text-gray-300">
-            <th class="px-4 py-3 text-left">ID</th>
-            <th class="px-4 py-3 text-left">Last Name</th>
-            <th class="px-4 py-3 text-left">First Name</th>
-            <th class="px-4 py-3 text-left">Email</th>
-            <th class="px-4 py-3 text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-700">
-          <?php if (!empty($users) && is_array($users)): ?>
-            <?php foreach ($users as $user): ?>
-              <tr class="hover:bg-gray-800/40 transition">
-                <td class="px-4 py-3"><?= htmlspecialchars($user['id']); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['last_name']); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['first_name']); ?></td>
-                <td class="px-4 py-3"><?= htmlspecialchars($user['email']); ?></td>
-                <td class="px-4 py-3 text-center space-x-2">
-                  <a href="<?= site_url('users/update/'.$user['id']); ?>" 
-                     class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition">
-                    Update
-                  </a>
-                  <a href="<?= site_url('users/delete/'.$user['id']); ?>" 
-                     onclick="return confirm('Are you sure you want to delete this record?');"
-                     class="px-3 py-1 rounded-lg text-sm font-medium bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-400 hover:to-red-500 transition">
-                     Delete
-                  </a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <tr>
-              <td colspan="5" class="text-center py-3">No users found</td>
-            </tr>
-          <?php endif; ?>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div id="pagination" class="flex justify-center mt-6 gap-2 flex-wrap relative z-10"></div>
-
-    <!-- Create button -->
-    <div class="text-center mt-8 relative z-10">
-      <a href="<?= site_url('users/create'); ?>" 
-         class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-semibold hover:from-green-400 hover:to-emerald-500 transition">
-         Create New User
-      </a>
-    </div>
+    <div class="term-title">Users</div>
   </div>
 
-  <script>
-    const searchBox = document.getElementById('searchBox');
-    const table = document.getElementById('studentsTable');
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    const pagination = document.getElementById('pagination');
-    const pageSize = 5;
-    let currentPage = 1;
+  <div class="term-body">
+    <div class="left" aria-hidden="true">
+      <div class="brand">
+        <div class="badge">0x4D · SYS</div>
+        <div style="color:var(--muted);font-size:12px">v0.9.3 • secure shell</div>
+      </div>
 
-    function filterRows() {
-      const query = searchBox.value.trim().toLowerCase();
-      return rows.filter(row => {
-        return Array.from(row.children).some(cell =>
-          cell.textContent.toLowerCase().includes(query)
-        );
-      });
-    }
+      <div class="meta">Live activity • audit trail • quick tips</div>
 
-    function renderTable(page = 1) {
-      const filtered = filterRows();
-      const total = filtered.length;
-      const totalPages = Math.ceil(total / pageSize) || 1;
-      if (page > totalPages) page = totalPages;
-      currentPage = page;
-      tbody.innerHTML = '';
-      const start = (page - 1) * pageSize;
-      const end = start + pageSize;
-      filtered.slice(start, end).forEach(row => tbody.appendChild(row));
-      renderPagination(totalPages);
-    }
+      <div class="logbox" id="logbox" role="log" aria-live="polite">
+<pre>
+<span style="color:var(--muted)">[2025-09-22 13:14]</span> user:create  id=24  by=admin
+<span style="color:var(--muted)">[2025-09-21 19:02]</span> user:update  id=18  by=supervisor
+<span style="color:var(--muted)">[2025-09-21 18:04]</span> user:delete  id=16  by=supervisor
+</pre>
+      </div>
 
-    function renderPagination(totalPages) {
-      pagination.innerHTML = '';
-      const maxButtons = 5;
-      let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-      let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-      if (endPage - startPage + 1 < maxButtons) startPage = Math.max(1, endPage - maxButtons + 1);
+      <div style="height:12px"></div>
+      <div style="color:var(--muted);font-size:12px">Tip: Use the search box to filter by id, name or email.</div>
+    </div>
 
-      const createButton = (label, page, disabled=false, active=false) => {
-        const btn = document.createElement('button');
-        btn.textContent = label;
-        btn.disabled = disabled;
-        btn.className = `px-3 py-1 rounded-lg text-xs font-semibold transition
-          ${active ? 'bg-indigo-500 text-white shadow-md border-indigo-500' :
-                     'bg-gray-800/60 border border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white'}
-          ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`;
-        if (!disabled) btn.onclick = () => gotoPage(page);
-        return btn;
-      };
+    <div class="right">
+      <div class="header-row">
+        <div class="hacker-title">Users List</div>
 
-      pagination.appendChild(createButton('«', 1, currentPage===1));
-      pagination.appendChild(createButton('‹', currentPage-1, currentPage===1));
-      for (let i = startPage; i <= endPage; i++) {
-        pagination.appendChild(createButton(i, i, false, i===currentPage));
-      }
-      pagination.appendChild(createButton('›', currentPage+1, currentPage===totalPages));
-      pagination.appendChild(createButton('»', totalPages, currentPage===totalPages));
-    }
+        <form class="search-form" action="<?= site_url('users/show'); ?>" method="get" role="search" aria-label="Search users">
+          <?php $q = isset($_GET['q']) ? $_GET['q'] : ''; ?>
+          <input class="search-input" type="text" name="q" placeholder="Search id, name, email..." value="<?= html_escape($q); ?>" />
+          <button class="search-btn" type="submit">SEARCH</button>
+        </form>
+      </div>
 
-    function gotoPage(page) { 
-      renderTable(page); 
-    }
+      <div class="table-wrap" role="table" aria-label="Users table">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Last Name</th>
+              <th>First Name</th>
+              <th>Email</th>
+              <th style="width:150px">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (!empty($users) && is_array($users)): ?>
+              <?php foreach ($users as $user): ?>
+                <tr>
+                  <td><?= html_escape($user['id']); ?></td>
+                  <td><?= html_escape($user['last_name']); ?></td>
+                  <td><?= html_escape($user['first_name']); ?></td>
+                  <td><?= html_escape($user['email']); ?></td>
+                  <td class="action-links">
+                    <a href="<?= site_url('users/update/'.$user['id']); ?>">Update</a> |
+                    <a class="delete" href="<?= site_url('users/delete/'.$user['id']); ?>" onclick="return confirm('Delete this record?');">Delete</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr class="empty-row"><td colspan="5">No records found.</td></tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
 
-    searchBox.addEventListener('input', () => renderTable(1));
-    renderTable(1);
-  </script>
+      <div class="footer-row">
+        <div class="pagination" aria-label="Pagination">
+          <?= isset($page) ? $page : ''; ?>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="create-btn" href="<?= site_url('users/create'); ?>">Create New Record</a>
+          <a style="color:var(--muted);text-decoration:none;padding:8px 10px;border:1px dashed rgba(255,255,255,0.2);border-radius:6px" href="<?= site_url(); ?>">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:10px;color:rgba(255,255,255,0.2);font-size:12px">— modern dashboard • console visuals —</div>
+</div>
 </body>
 </html>

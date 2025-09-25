@@ -1,54 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create User</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #1a1d24;
+      --panel-dark: #13161c;
+      --text: #cfd4dc;
+      --heading: #ffffff;
+      --muted: #8a9099;
+      --blue: #3b82f6;
+      --blue-dark: #2563eb;
+      --radius: 8px;
+      --mono: monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--mono);
+      background: linear-gradient(180deg, #0b0d11 0%, #0f1117 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 450px; /* 👈 keeps it small */
+      padding: 20px;
+    }
+
+    .main h1 {
+      color: var(--heading);
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    input[type=text],
+    input[type=email] {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--panel-dark);
+      color: var(--heading);
+      font-family: var(--mono);
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 1px var(--blue);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: var(--blue);
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--blue);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--blue-dark);
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white">
-
-  <!-- User Form -->
-  <div class="w-full max-w-md bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700 relative overflow-hidden">
-    
-    <!-- Glow border effect -->
-    <div class="absolute inset-0 rounded-2xl border border-purple-500/40 pointer-events-none"></div>
-
-    <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 text-center mb-6 drop-shadow-lg">
-      Create User
-    </h1>
-
-    <form action="<?=site_url('users/create');?>" method="post" class="space-y-5 relative z-10">
-      <div>
-        <label for="last_name" class="block text-sm font-semibold text-gray-300">Last Name</label>
-        <input type="text" id="last_name" name="last_name"
-          class="mt-2 w-full rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white focus:border-purple-500 focus:ring-2 focus:ring-purple-500/70 placeholder-gray-400"
-          placeholder="Enter last name">
-      </div>
-      <div>
-        <label for="first_name" class="block text-sm font-semibold text-gray-300">First Name</label>
-        <input type="text" id="first_name" name="first_name"
-          class="mt-2 w-full rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/70 placeholder-gray-400"
-          placeholder="Enter first name">
-      </div>
-      <div>
-        <label for="email" class="block text-sm font-semibold text-gray-300">Email</label>
-        <input type="email" id="email" name="email"
-          class="mt-2 w-full rounded-xl border border-gray-700 bg-gray-800/60 px-4 py-2 text-white focus:border-pink-400 focus:ring-2 focus:ring-pink-500/70 placeholder-gray-400"
-          placeholder="Enter email">
-      </div>
-
-      <div class="flex items-center justify-between pt-4">
-        <a href="<?=site_url('users/show');?>" class="text-sm text-gray-400 hover:text-purple-400 transition">
-          ← Back to Show
-        </a>
-        <button type="submit"
-          class="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:from-indigo-400 hover:to-purple-500 active:scale-95 transition">
-          Submit
-        </button>
-      </div>
-    </form>
+<body>
+  <div class="main">
+    <h1>Create User</h1>
+    <div class="panel">
+      <form action="<?=site_url('users/create');?>" method="post">
+        <div>
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" placeholder="Enter last name">
+        </div>
+        <div>
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name" placeholder="Enter first name">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter email">
+        </div>
+        <div class="footer-row">
+          <a href="<?=site_url('users/show');?>" class="back-link">← Dashboard</a>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
   </div>
-
 </body>
 </html>
