@@ -1,3 +1,4 @@
+
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
@@ -50,19 +51,15 @@ class UserController extends Controller {
             $lastname = $this->io->post('last_name');
             $firstname = $this->io->post('first_name');
             $email = $this->io->post('email');
-
             $data = array(
-                'last_name'  => $lastname,
+                'last_name' => $lastname,
                 'first_name' => $firstname,
-                'email'      => $email
+                'email' => $email
             );
-
             if($this->UserModel->insert($data)){
-                // redirect to dashboard after creating user
-                redirect(site_url('show'));
+                redirect('users/show');
             } else {
-                echo 'Something went wrong while inserting user.';
-                var_dump($this->db->error()); // debug DB error if any
+                echo 'Something went wrong';
             }
         } else {
             $this->call->view('create');
@@ -75,18 +72,15 @@ class UserController extends Controller {
             $lastname = $this->io->post('last_name');
             $firstname = $this->io->post('first_name');
             $email = $this->io->post('email');
-
             $data = array(
-                'last_name'  => $lastname,
+                'last_name' => $lastname,
                 'first_name' => $firstname,
-                'email'      => $email
+                'email' => $email
             );
-
             if($this->UserModel->update($id, $data)){
-                redirect(site_url('users/show'));
+                redirect('users/show');
             } else {
-                echo 'Something went wrong while updating user.';
-                var_dump($this->db->error());
+                echo 'Something went wrong';
             }
         } else {
             $this->call->view('update', $data);
@@ -95,10 +89,9 @@ class UserController extends Controller {
 
     public function delete($id){
         if($this->UserModel->delete($id)){
-            redirect(site_url('users/show'));
+            redirect('users/show');
         } else {
-            echo 'Something went wrong while deleting user.';
-            var_dump($this->db->error());
+            echo 'Something went wrong';
         }
     }
 }
