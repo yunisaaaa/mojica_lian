@@ -59,7 +59,7 @@ class UserController extends Controller {
 
             if($this->UserModel->insert($data)){
                 // redirect to dashboard after creating user
-                redirect(site_url('dashboard'));
+                redirect(site_url('show'));
             } else {
                 echo 'Something went wrong while inserting user.';
                 var_dump($this->db->error()); // debug DB error if any
