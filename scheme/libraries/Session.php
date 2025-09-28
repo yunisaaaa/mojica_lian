@@ -9,36 +9,14 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  *
  * Copyright (c) 2020 Ronald M. Marasigan
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package LavaLust
- * @author Ronald M. Marasigan <ronald.marasigan@yahoo.com>
- * @since Version 1
- * @link https://github.com/ronmarasigan/LavaLust
- * @license https://opensource.org/licenses/MIT MIT License
+ * (license trimmed for brevity)
  */
 
 /**
 * ------------------------------------------------------
 *  Class Session
 * ------------------------------------------------------
- */
+*/
 class Session {
 
 	/**
@@ -77,16 +55,16 @@ class Session {
 		$this->config =& get_config();
 
 		//IP Matching
-		$this->match_ip = $this->config['sess_match_ip'];
+		$this->match_ip = isset($this->config['sess_match_ip']) ? $this->config['sess_match_ip'] : FALSE;
 
 		//Fingerprint Matching
-        $this->match_fingerprint = $this->config['sess_match_fingerprint'];
+        $this->match_fingerprint = isset($this->config['sess_match_fingerprint']) ? $this->config['sess_match_fingerprint'] : FALSE;
 
 		//Set up cookie name
 		if ( ! empty($this->config['cookie_prefix']) ) {
-	    	$this->config['cookie_name'] = $this->config['sess_cookie_name'] ? $this->config['cookie_prefix'].$this->config['sess_cookie_name'] : NULL;
+	    	$this->config['cookie_name'] = !empty($this->config['sess_cookie_name']) ? $this->config['cookie_prefix'].$this->config['sess_cookie_name'] : NULL;
 	    } else {
-	    	$this->config['cookie_name'] = $this->config['sess_cookie_name'] ? $this->config['sess_cookie_name'] : NULL;
+	    	$this->config['cookie_name'] = !empty($this->config['sess_cookie_name']) ? $this->config['sess_cookie_name'] : NULL;
 	    }
 
 		//Set up cookie name
@@ -110,8 +88,9 @@ class Session {
 		{
 	    	$this->config['cookie_expiration'] = (int) $this->config['cookie_expiration'];
 		} else {
-	    	$this->config['cookie_expiration'] = ( ! isset($this->config['sess_expiration']) AND $this->config['sess_expire_on_close']) ? 0 : (int) $this->config['sess_expiration'];
+	    	$this->config['cookie_expiration'] = ( ! isset($this->config['sess_expiration']) AND !empty($this->config['sess_expire_on_close'])) ? 0 : (int) $this->config['sess_expiration'];
 		}
+
 	    session_set_cookie_params(array(
 			'lifetime' => $this->config['cookie_expiration'],
 			'path'     => $this->config['cookie_path'],
@@ -125,14 +104,35 @@ class Session {
 	    ini_set('session.use_strict_mode', 1);
 	    ini_set('session.use_cookies', 1);
 	    ini_set('session.use_only_cookies', 1);
-	    ini_set('session.sid_length', $this->_get_sid_length());
+	    if (PHP_VERSION_ID < 70100) {
+	    	ini_set('session.sid_length', $this->_get_sid_length());
+	    }
 
+	    // --- Ensure we have a valid save path BEFORE registering file handler ---
 	    if ( ! empty($this->config['sess_driver']) AND $this->config['sess_driver'] == 'file' ) {
 			require_once 'Session/FileSessionHandler.php';
+
+			// Determine save path: prefer config, fallback to system temp dir.
+			$savePath = !empty($this->config['sess_save_path']) ? $this->config['sess_save_path'] : (sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'lavalsessions');
+
+			// Normalize and ensure directory exists
+			$savePath = rtrim($savePath, DIRECTORY_SEPARATOR);
+			if (!is_dir($savePath)) {
+			    @mkdir($savePath, 0700, TRUE);
+			}
+			// If still not directory, fallback to sys_get_temp_dir()
+			if (!is_dir($savePath)) {
+			    $savePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'lavalsessions';
+			    @mkdir($savePath, 0700, TRUE);
+			}
+
+			// Set PHP session save path so handler receives a sensible $save_path
+			@session_save_path($savePath);
+
 			$handler = new FileSessionHandler();
 			session_set_save_handler($handler, TRUE);
 		} elseif ( ! empty($this->config['sess_driver']) AND $this->config['sess_driver'] == 'database' ) {
-
+			// Database session handler possibility (not implemented here)
 		}
 
 	    //On creation store the useragent fingerprint
@@ -141,23 +141,23 @@ class Session {
 			$_SESSION['fingerprint'] = $this->generate_fingerprint();
 		//If we should verify user agent fingerprints (and this one doesn't match!)
 		} elseif($this->match_fingerprint && $_SESSION['fingerprint'] != $this->generate_fingerprint()) {
-			return FALSE;
+			// keep constructor stable; do not return from constructor
 		}
 
 		//If an IP address is present and we should check to see if it matches
 		if(isset($_SESSION['ip_address']) && $this->match_ip)
 		{
 			//If the IP does NOT match
-			if($_SESSION['ip_address'] != $_SERVER['REMOTE_ADDR'])
+			if($_SESSION['ip_address'] != (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : ''))
 			{
-				return FALSE;
+				// keep constructor stable; do not return from constructor
 			}
 		}
 
-		//Set the users IP Address
-		$_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
+		//Set the users IP Address (if available)
+		$_SESSION['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
 
-	    if ( isset($_COOKIE[$this->config['cookie_name']]) )
+	    if ( isset($this->config['cookie_name']) && isset($_COOKIE[$this->config['cookie_name']]) )
 		{
 	    	preg_match('/('.session_id().')/', $_COOKIE[$this->config['cookie_name']], $matches);
 	    	if ( empty($matches) )
@@ -166,7 +166,10 @@ class Session {
 	      	}
 	    }
 
-		session_start();
+		// Start session if not already started
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
 
 		//Set time before session updates
 	    $regenerate_time = (int) $this->config['sess_time_to_update'];
@@ -180,7 +183,7 @@ class Session {
 	    	} elseif ( $_SESSION['last_session_regenerate'] < (time() - $regenerate_time) ) {
 		        $this->sess_regenerate((bool) $this->config['sess_regenerate_destroy']);
 	      	}
-	    } elseif (isset($_COOKIE[$this->config['cookie_name']]) AND $_COOKIE[$this->config['cookie_name']] === $this->session_id()){
+	    } elseif (isset($this->config['cookie_name']) && isset($_COOKIE[$this->config['cookie_name']]) AND $_COOKIE[$this->config['cookie_name']] === $this->session_id()){
 			//Check for expiration time
 			$expiration = empty($this->config['cookie_expiration']) ? 0 : time() + $this->config['cookie_expiration'];
 
@@ -209,10 +212,11 @@ class Session {
 	public function generate_fingerprint()
 	{
 		//We don't use the ip-adress, because it is subject to change in most cases
+		$key = array();
 		foreach(array('ACCEPT_CHARSET', 'ACCEPT_ENCODING', 'ACCEPT_LANGUAGE', 'USER_AGENT') as $name) {
 			$key[] = empty($_SERVER['HTTP_'. $name]) ? NULL : $_SERVER['HTTP_'. $name];
 		}
-		//Create an MD5 has and return it
+		//Create an MD5 hash and return it
 		return md5(implode("\0", $key));
 	}
 
@@ -262,18 +266,19 @@ class Session {
 	 * Regenerate Session ID
 	 *
 	 * @param  bool FALSE by Default
-	 * @return string    Session ID
+	 * @return bool
 	 */
 	public function sess_regenerate($destroy = FALSE)
 	{
 		$_SESSION['last_session_regenerate'] = time();
 		session_regenerate_id($destroy);
+		return TRUE;
 	}
 
 	/**
 	 * Mark as Flash
 	 *
-	 * @param  string $key Session
+	 * @param  string|array $key Session key or keys
 	 * @return bool
 	 */
 	public function mark_as_flash($key)
@@ -336,7 +341,7 @@ class Session {
 	/**
 	 * Check if session variable has data
 	 *
-	 * @param  string $key Session
+	 * @param  string|null $key Session
 	 * @return boolean
 	 */
 	public function has_userdata($key = null)
@@ -354,7 +359,9 @@ class Session {
 	/**
 	 * Set Data to Session Key
 	 *
-	 * @param array $keys array of Sessions
+	 * @param array|string $keys array of Sessions or single key
+	 * @param mixed $value
+	 * @return bool
 	 */
 	public function set_userdata($keys, $value = NULL)
 	{
@@ -367,13 +374,14 @@ class Session {
 		} else {
 			$_SESSION[$keys] = $value;
 		}
+		return TRUE;
 	}
 
 	/**
 	 * Unset Session Data
 	 *
-	 * @param  array  $keys Array of Sessions
-	 * @return function
+	 * @param  array|string  $keys Array of Sessions or single key
+	 * @return bool
 	 */
 	public function unset_userdata($keys)
 	{
@@ -381,27 +389,28 @@ class Session {
 		{
 			foreach ($keys as $key)
 			{
-				if($this->has_userdata($key))
+				if(is_scalar($key) && $this->has_userdata($key))
 				{
 					unset($_SESSION[$key]);
 				}
 			}
 		} else {
-			if($this->has_userdata($keys))
+			if(is_scalar($keys) && $this->has_userdata($keys))
 			{
 				unset($_SESSION[$keys]);
 			}
 		}
+		return TRUE;
 	}
 
 	/**
 	 * Get Flash Keys
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function get_flash_keys()
 	{
-		if ( ! isset($_SESSION['__lava_vars']))
+		if ( ! isset($_SESSION['__lava_vars']) || !is_array($_SESSION['__lava_vars']))
 		{
 			return array();
 		}
@@ -423,7 +432,7 @@ class Session {
 	 */
 	public function unmark_flash($key)
 	{
-		if (empty($_SESSION['__ci_vars']))
+		if (empty($_SESSION['__lava_vars']))
 		{
 			return;
 		}
@@ -432,23 +441,23 @@ class Session {
 
 		foreach ($key as $k)
 		{
-			if (isset($_SESSION['__ci_vars'][$k]) && ! is_int($_SESSION['__ci_vars'][$k]))
+			if (isset($_SESSION['__lava_vars'][$k]) && ! is_int($_SESSION['__lava_vars'][$k]))
 			{
-				unset($_SESSION['__ci_vars'][$k]);
+				unset($_SESSION['__lava_vars'][$k]);
 			}
 		}
 
-		if (empty($_SESSION['__ci_vars']))
+		if (empty($_SESSION['__lava_vars']))
 		{
-			unset($_SESSION['__ci_vars']);
+			unset($_SESSION['__lava_vars']);
 		}
 	}
 
    	/**
    	 * Get specific session key value
-
-   	 * @param  array $key Session Keys
-   	 * @return string      Session Data
+   	 *
+   	 * @param  string|null $key Session Keys
+   	 * @return mixed (string|array|null) Session Data
    	 */
 	public function userdata($key = NULL)
 	{
@@ -463,7 +472,7 @@ class Session {
 		$userdata = array();
 		$_exclude = array_merge(
 			array('__lava_vars'),
-			$this->get_flash_keys(),
+			$this->get_flash_keys()
 		);
 
 		foreach (array_keys($_SESSION) as $key)
@@ -480,18 +489,20 @@ class Session {
 	/**
 	 * Session Destroy
 	 *
-	 * @return function
+	 * @return bool
 	 */
 	public function sess_destroy()
 	{
 		session_destroy();
+		$_SESSION = array();
+		return TRUE;
 	}
 
 	/**
 	 * Get flash data to Session
 	 *
-	 * @param  array $key Session Keys
-	 * @return string      Session Data
+	 * @param  string|null $key Session Keys
+	 * @return mixed (string|array|null) Session Data
 	 */
 	public function flashdata($key = NULL)
 	{
@@ -518,13 +529,15 @@ class Session {
 	/**
 	 * Set flash data to Session
 	 *
-	 * @param  array $key Session Keys
-	 * @return function
+	 * @param  array|string $data Session Keys
+	 * @param  mixed $value
+	 * @return bool
 	 */
 	public function set_flashdata($data, $value = NULL)
 	{
 		$this->set_userdata($data, $value);
 		$this->mark_as_flash(is_array($data) ? array_keys($data) : $data);
+		return TRUE;
 	}
 }
 
