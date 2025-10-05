@@ -5,78 +5,117 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to LavaLust</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+
     <style>
+        /* ======== RESET ======== */
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            background: #f8fafc;
-            color: #334155;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: #fafafa;
+            color: #222;
+            line-height: 1.6;
         }
 
+        /* ======== LAYOUT ======== */
         .container {
-            max-width: 960px;
-            margin: 3rem auto;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            max-width: 860px;
+            margin: 4rem auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             overflow: hidden;
         }
 
         .header {
-            background: #3B82F6; /* lighter blue */
-            color: #ffffff;
-            padding: 2rem;
             text-align: center;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 2.5rem 1rem;
         }
 
         .header h1 {
-            margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .header p {
+            margin-top: 0.5rem;
+            color: #666;
+            font-size: 1rem;
         }
 
         .main {
-            padding: 2rem;
+            padding: 2rem 2.5rem;
         }
 
         h2 {
-            color: #1e40af;
-            margin-top: 2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #111;
+            margin: 2.5rem 0 1rem;
         }
 
         p {
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            color: #444;
         }
 
-        code, pre {
-            display: block;
-            background: #f1f5f9;
+        /* ======== CODE BLOCKS ======== */
+        pre, code {
+            background: #f6f6f6;
             padding: 1rem;
-            border-left: 4px solid #3b82f6;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            font-family: "Fira Code", monospace;
             font-size: 0.9rem;
-            color: #1e293b;
             overflow-x: auto;
+            color: #111;
+            border: 1px solid #eee;
         }
 
-        ul {
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
+        /* ======== GRID ======== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        li {
+        .card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 1.2rem;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: #ddd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            color: #111;
             margin-bottom: 0.5rem;
         }
 
+        .card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* ======== LINKS ======== */
         a {
-            color: #2563eb;
+            color: #0071e3;
             text-decoration: none;
         }
 
@@ -84,33 +123,46 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             text-decoration: underline;
         }
 
+        ul {
+            margin-top: 0.5rem;
+            padding-left: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* ======== FOOTER ======== */
         .footer {
-            font-size: 0.9rem;
             text-align: center;
-            padding: 1rem;
-            background: #f1f5f9;
-            border-top: 1px solid #e2e8f0;
+            background: #fafafa;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #eee;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
+        /* ======== RESPONSIVE ======== */
+        @media (max-width: 600px) {
+            .container {
+                margin: 1.5rem;
+            }
 
-        .card {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-        }
+            .main {
+                padding: 1.5rem;
+            }
 
-        .card h3 {
-            margin-top: 0;
-            color: #0f172a;
+            .header h1 {
+                font-size: 1.7rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -167,7 +219,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </code></pre>
 
             <h2>🧪 Quick Example</h2>
-                <p>Route in <code>app/config/routes.php</code></p>
+            <p>Route in <code>app/config/routes.php</code></p>
 <pre><code>
 $router->get('/', 'Welcome::index');
 </code></pre>

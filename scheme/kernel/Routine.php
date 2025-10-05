@@ -151,86 +151,75 @@ if ( ! function_exists('show_error'))
 if ( ! function_exists('_shutdown_handler'))
 {
 	/**
-	 * Shutdown handler for catching fatal errors
-	 *
-	 * @return bool
+	 * For Debugging
+	 * @return string
 	 */
-	function _shutdown_handler(): bool
+	function _shutdown_handler()
 	{
 		$last_error = error_get_last();
-
-		if (
-			isset($last_error) &&
-			($last_error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING))
-		) {
-			_error_handler(
-				$last_error['type'],
-				$last_error['message'],
-				$last_error['file'],
-				$last_error['line']
-			);
-			return true; // error handled
+		if (isset($last_error) &&
+			($last_error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING)))
+		{
+			_error_handler($last_error['type'], $last_error['message'], $last_error['file'], $last_error['line']);
 		}
-
-		return false; // nothing to handle
 	}
 }
 
 if ( ! function_exists('_exception_handler'))
 {
 	/**
-	 * Exception handler
-	 *
-	 * @param Throwable $e
-	 * @return bool
+	 * For Debgging
+	 * @param  object $e
+	 * @return string
 	 */
-	function _exception_handler(Throwable $e): bool
+	function _exception_handler($e)
 	{
-		if (config_item('log_threshold') == 1 || config_item('log_threshold') == 3) {
+		if(config_item('log_threshold') == 1 || config_item('log_threshold') == 3)
+		{
 			$logger =& load_class('logger', 'kernel');
 			$logger->log('error', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
 		}
-
-		if (strtolower(config_item('ENVIRONMENT')) == 'development') {
+		if(strtolower(config_item('ENVIRONMENT') == 'development'))
+		{
 			$exception =& load_class('Errors', 'kernel');
 			$exception->show_exception($e);
 		}
-
-		return true; // always return
+		
 	}
 }
 
 if ( ! function_exists('_error_handler'))
 {
 	/**
-	 * Error handler
-	 *
-	 * @param int    $severity
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param int    $errline
-	 * @return bool
+	 * For Debugging
+	 * @param  string $errno
+	 * @param  string $errstr
+	 * @param  string $errfile
+	 * @param  string $errline
+	 * @return string
 	 */
-	function _error_handler(int $severity, string $errstr, string $errfile, int $errline): bool
+	function _error_handler($severity, $errstr, $errfile, $errline)
 	{
+		// Map of PHP error levels
 		$error_levels = [
-			E_ERROR             => "E_ERROR",
-			E_WARNING           => "E_WARNING",
-			E_PARSE             => "E_PARSE",
-			E_NOTICE            => "E_NOTICE",
-			E_CORE_ERROR        => "E_CORE_ERROR",
-			E_CORE_WARNING      => "E_CORE_WARNING",
-			E_COMPILE_ERROR     => "E_COMPILE_ERROR",
-			E_COMPILE_WARNING   => "E_COMPILE_WARNING",
-			E_USER_ERROR        => "E_USER_ERROR",
-			E_USER_WARNING      => "E_USER_WARNING",
-			E_USER_NOTICE       => "E_USER_NOTICE",
-			E_STRICT            => "E_STRICT",
+			E_ERROR => "E_ERROR",
+			E_WARNING => "E_WARNING",
+			E_PARSE => "E_PARSE",
+			E_NOTICE => "E_NOTICE",
+			E_CORE_ERROR => "E_CORE_ERROR",
+			E_CORE_WARNING => "E_CORE_WARNING",
+			E_COMPILE_ERROR => "E_COMPILE_ERROR",
+			E_COMPILE_WARNING => "E_COMPILE_WARNING",
+			E_USER_ERROR => "E_USER_ERROR",
+			E_USER_WARNING => "E_USER_WARNING",
+			E_USER_NOTICE => "E_USER_NOTICE",
+			E_STRICT => "E_STRICT",
 			E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
-			E_DEPRECATED        => "E_DEPRECATED",
-			E_USER_DEPRECATED   => "E_USER_DEPRECATED",
+			E_DEPRECATED => "E_DEPRECATED",
+			E_USER_DEPRECATED => "E_USER_DEPRECATED",
 		];
 
+		// Convert severity number to string name
 		$severity_name = $error_levels[$severity] ?? "UNKNOWN_ERROR";
 
 		if (config_item('log_threshold') == 1 || config_item('log_threshold') == 3) {
@@ -242,147 +231,171 @@ if ( ! function_exists('_error_handler'))
 			$error =& load_class('Errors', 'kernel');
 			$error->show_php_error($severity_name, $errstr, $errfile, $errline);
 		}
-
-		return true;
 	}
 }
 
 if ( ! function_exists('get_config'))
 {
 	/**
-	 * Load config/config.php
+	 * To access config from config config/config.php
 	 *
-	 * @return array|null
+	 * @return void
 	 */
-	function &get_config(): ?array
+	function &get_config()
 	{
 		static $config;
 
-		if ( file_exists(APP_DIR . 'config/config.php') ) {
-			require APP_DIR . 'config/config.php';
+		if ( file_exists(APP_DIR . 'config/config.php') )
+		{
+			require_once APP_DIR . 'config/config.php';
 
-			if (isset($config) && is_array($config)) {
+			if ( isset($config) OR is_array($config) )
+			{
+				foreach( $config as $key => $val )
+				{
+					$config[$key] = $val;
+				}
+
 				return $config;
 			}
-		} else {
+		} else
 			show_404('404 Not Found', 'The configuration file does not exist');
-		}
-
-		$null = null;
-		return $null;
 	}
 }
 
 if ( ! function_exists('config_item'))
 {
 	/**
-	 * Get config item
+	 * Global Function to access config
 	 *
 	 * @param string $item
 	 * @return mixed
 	 */
-	function config_item(string $item)
+	function config_item($item)
 	{
 		static $_config;
 
-		if (empty($_config)) {
+		if (empty($_config))
+		{
+			// references cannot be directly assigned to static variables, so we use an array
 			$_config[0] =& get_config();
 		}
 
-		return $_config[0][$item] ?? null;
+		return isset($_config[0][$item]) ? $_config[0][$item] : NULL;
 	}
 }
 
 if ( ! function_exists('autoload_config'))
 {
 	/**
-	 * Load config/autoload.php
+	 * To access config from config config/autoload.php
 	 *
-	 * @return array|null
+	 * @return void
 	 */
-	function &autoload_config(): ?array
+	function &autoload_config()
 	{
 		static $autoload;
 
-		if ( file_exists(APP_DIR . 'config/autoload.php') ) {
-			require APP_DIR . 'config/autoload.php';
+		if ( file_exists(APP_DIR . 'config/autoload.php') )
+		{
+			require_once APP_DIR . 'config/autoload.php';
 
-			if (isset($autoload) && is_array($autoload)) {
+			if ( isset($autoload)  OR is_array($autoload) )
+			{
+				foreach( $autoload as $key => $val )
+				{
+					$autoload[$key] = $val;
+				}
+
 				return $autoload;
 			}
-		} else {
+		} else
 			show_404('404 Not Found', 'The configuration file does not exist');
-		}
-
-		$null = null;
-		return $null;
 	}
 }
 
 if ( ! function_exists('database_config'))
 {
 	/**
-	 * Load config/database.php
+	 * To access config from config config/database.php
 	 *
-	 * @return array|null
+	 * @return void
 	 */
-	function &database_config(): ?array
+	function &database_config()
 	{
 		static $database;
 
-		if ( file_exists(APP_DIR . 'config/database.php') ) {
-			require APP_DIR . 'config/database.php';
+		if ( file_exists(APP_DIR . 'config/database.php') )
+		{
+			require_once APP_DIR . 'config/database.php';
 
-			if (isset($database) && is_array($database)) {
+			if ( isset($database)  OR is_array($database) )
+			{
+				foreach( $database as $key => $val )
+				{
+					$database[$key] = $val;
+				}
+
 				return $database;
 			}
-		} else {
+		} else
 			show_404('404 Not Found', 'The configuration file does not exist');
-		}
-
-		$null = null;
-		return $null;
 	}
 }
 
 if ( ! function_exists('route_config'))
 {
 	/**
-	 * Load config/routes.php
+	 * To access config from config config/routes.php
 	 *
-	 * @return array|null
+	 * @return void
 	 */
-	function &route_config(): ?array
+	function &route_config()
 	{
 		static $route;
 
-		if ( file_exists(APP_DIR . 'config/routes.php') ) {
-			require APP_DIR . 'config/routes.php';
+		if ( file_exists(APP_DIR . 'config/routes.php') )
+		{
+			require_once APP_DIR . 'config/routes.php';
 
-			if (isset($route) && is_array($route)) {
+			if ( isset($route)  OR is_array($route) )
+			{
+				foreach( $route as $key => $val )
+				{
+					$route[$key] = $val;
+				}
+
 				return $route;
 			}
 		} else {
 			show_404('404 Not Found', 'The configuration file does not exist');
 		}
-
-		$null = null;
-		return $null;
 	}
 }
 
 if ( ! function_exists('html_escape'))
 {
-	function html_escape($var, bool $double_encode = true)
+	/**
+	 * Returns HTML escaped variable.
+	 *
+	 * @param	mixed	$var		The input string or array of strings to be escaped.
+	 * @param	bool	$double_encode	$double_encode set to FALSE prevents escaping twice.
+	 * @return	mixed			The escaped string or array of strings as a result.
+	 */
+	function html_escape($var, $double_encode = TRUE)
 	{
-		if (empty($var)) {
+		if (empty($var))
+		{
 			return $var;
 		}
 
-		if (is_array($var)) {
-			foreach (array_keys($var) as $key) {
+		if (is_array($var))
+		{
+			foreach (array_keys($var) as $key)
+			{
 				$var[$key] = html_escape($var[$key], $double_encode);
 			}
+
 			return $var;
 		}
 
@@ -392,11 +405,19 @@ if ( ! function_exists('html_escape'))
 
 if ( ! function_exists('is_php'))
 {
-	function is_php(string $version): bool
+	/**
+	 * Determines if the current version of PHP is equal to or greater than the supplied value
+	 *
+	 * @param	string
+	 * @return	bool	TRUE if the current version is $version or higher
+	 */
+	function is_php($version)
 	{
 		static $_is_php;
+		$version = (string) $version;
 
-		if (! isset($_is_php[$version])) {
+		if ( ! isset($_is_php[$version]))
+		{
 			$_is_php[$version] = version_compare(PHP_VERSION, $version, '>=');
 		}
 
@@ -406,17 +427,29 @@ if ( ! function_exists('is_php'))
 
 if ( ! function_exists('is_https'))
 {
-	function is_https(): bool
+	/**
+	 * Is HTTPS?
+	 *
+	 * Determines if the application is accessed via an encrypted
+	 * (HTTPS) connection.
+	 *
+	 * @return	bool
+	 */
+	function is_https()
 	{
-		if (! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
-			return true;
+		if ( ! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+		{
+			return TRUE;
 		}
-		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
-			return true;
+		elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+		{
+			return TRUE;
 		}
-		if (! empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
-			return true;
+		elseif ( ! empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off')
+		{
+			return TRUE;
 		}
-		return false;
+
+		return FALSE;
 	}
 }
