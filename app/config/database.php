@@ -70,4 +70,20 @@ $database['main'] = array(
     'path'      => ''
 );
 
+
+
+/*
+$database['main'] = array(
+    'driver'	=> 'mysql',
+    'hostname'	=> 'root',
+    'port'		=> '3306',
+    'username'	=> 'root',
+    'password'	=> '',
+    'database'	=> 'mockdata',
+    'charset'	=> 'utf8mb4',
+    'dbprefix'	=> '',
+    // Optional for SQLite
+    'path'      => ''
+);
+**/
 ?>

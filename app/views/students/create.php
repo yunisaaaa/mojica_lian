@@ -5,137 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create User</title>
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-
   <style>
     :root {
-      --bg-color: #f5f6fa;
+      --bg-gradient: linear-gradient(to bottom right, #f7fbff, #e6f0ff);
       --panel-color: #ffffff;
-      --border-color: #e0e0e0;
-      --text-color: #222;
-      --accent-color: #2563eb; /* Modern blue */
-      --accent-hover: #1e4ed8;
-      --font-body: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --accent-color: #0073ff; /* Neon blue */
+      --accent-hover: #005ae0;
+      --text-color: #1f2937;
+      --border-color: #e2e8f0;
+      --input-bg: #f9fafb;
+      --shadow-color: rgba(0, 115, 255, 0.25);
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: var(--font-body);
+      background: var(--bg-gradient);
+      font-family: "Inter", "Segoe UI", sans-serif;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       margin: 0;
-      padding: 1rem;
     }
 
     .form-container {
-      background-color: var(--panel-color);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 2.5rem 2.8rem;
+      background: var(--panel-color);
+      border-radius: 16px;
+      padding: 2.5rem 3rem;
+      box-shadow: 0 10px 30px rgba(0, 115, 255, 0.1);
       width: 100%;
-      max-width: 420px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      max-width: 400px;
+      text-align: center;
+      border: 1px solid rgba(0, 115, 255, 0.15);
       transition: all 0.3s ease;
     }
 
     .form-container:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 40px rgba(0, 115, 255, 0.15);
     }
 
     h1 {
       color: var(--accent-color);
-      font-size: 1.6rem;
-      font-weight: 700;
+      text-shadow: 0 0 8px rgba(0, 115, 255, 0.5);
+      font-size: 1.8rem;
       margin-bottom: 2rem;
-      letter-spacing: 0.5px;
-      text-align: center;
+      letter-spacing: 1px;
     }
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.4rem;
-      width: 95%;
+      gap: 1.2rem;
     }
 
     label {
-      display: block;
       text-align: left;
-      margin-bottom: 0.4rem;
       font-size: 0.9rem;
+      color: #555;
       font-weight: 600;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 0.2rem;
     }
 
     input[type="text"],
     input[type="email"] {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background-color: #f9fafb;
-      color: var(--text-color);
+      background: var(--input-bg);
       font-size: 1rem;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     input:focus {
-      outline: none;
       border-color: var(--accent-color);
-      background-color: #fff;
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+      outline: none;
+      box-shadow: 0 0 10px var(--shadow-color);
+      background: #fff;
     }
 
     button[type="submit"] {
-      width: 100%;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 10px;
       padding: 0.9rem;
       font-size: 1rem;
       font-weight: 600;
-      color: #fff;
-      background-color: var(--accent-color);
-      border: none;
-      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.1s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 115, 255, 0.3);
     }
 
     button[type="submit"]:hover {
-      background-color: var(--accent-hover);
+      background: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(0, 115, 255, 0.35);
       transform: translateY(-1px);
     }
 
-    button[type="submit"]:active {
-      transform: translateY(1px);
-    }
-
     .back-link {
-      display: block;
-      margin-top: 1.8rem;
-      color: var(--accent-color);
+      display: inline-block;
+      margin-top: 1.5rem;
       text-decoration: none;
+      color: var(--accent-color);
+      font-weight: 600;
       font-size: 0.95rem;
-      text-align: center;
-      transition: color 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .back-link:hover {
       color: var(--accent-hover);
-    }
-
-    @media (max-width: 480px) {
-      .form-container {
-        padding: 2rem 1.5rem;
-      }
-
-      h1 {
-        font-size: 1.4rem;
-      }
+      text-shadow: 0 0 6px rgba(0, 115, 255, 0.5);
     }
   </style>
 </head>
