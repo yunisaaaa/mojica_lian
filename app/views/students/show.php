@@ -169,8 +169,8 @@
 .pagination {
   margin-top: 2rem;
   display: flex;
-  flex-direction: column; /* 👈 makes it vertical */
-  align-items: center;    /* centers each item horizontally */
+  flex-direction: row; /* 👈 makes it vertical */
+  align-items: center ;    /* centers each item horizontally */
   gap: 0.6rem;
 }
 
