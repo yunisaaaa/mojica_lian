@@ -6,27 +6,28 @@
 <title>Login Page</title>
 
 <!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Consolas&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    --bg-color: #f5f7fa;
-    --panel-bg: rgba(255, 255, 255, 0.9);
-    --border-color: rgba(0, 0, 0, 0.08);
-    --primary-color: #007bff;
-    --primary-hover: #007bff;
-    --text-color: #111827;
-    --text-muted: #4b5563;
-    --input-bg: rgba(255, 255, 255, 0.7);
-    --input-border: rgba(0, 0, 0, 0.1);
-    --error-color: #dc2626;
+    --bg-color: #f5ede3;
+    --panel-bg: #fffaf5;
+    --border-color: #d6c3b4;
+    --primary-color: #8b5e3c; /* Coffee brown */
+    --primary-hover: #6b4423;
+    --text-color: #3e2c21;
+    --text-muted: #5a4634;
+    --input-bg: #fdf7f2;
+    --input-border: #d6c3b4;
+    --error-color: #b23c17;
     --radius: 10px;
-    --font-main: "Consolas", "Courier New", monospace;
+    --shadow-color: rgba(139, 94, 60, 0.25);
+    --font-main: "Poppins", sans-serif;
   }
 
   body {
-    background: linear-gradient(135deg, #f8fafc, #e3f2fd);
+    background: linear-gradient(135deg, #f6f1eb, #e7d8c9);
     font-family: var(--font-main);
     display: flex;
     justify-content: center;
@@ -37,23 +38,16 @@
     color: var(--text-color);
   }
 
-  /* animated background grid */
+  /* soft background texture */
   body::before {
     content: "";
     position: absolute;
     top: 0; left: 0;
-    width: 200%; height: 200%;
+    width: 100%; height: 100%;
     background:
-      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: moveGrid 10s linear infinite;
+      radial-gradient(circle at 20% 20%, rgba(139,94,60,0.05) 0%, transparent 60%),
+      radial-gradient(circle at 80% 80%, rgba(139,94,60,0.05) 0%, transparent 60%);
     z-index: 0;
-  }
-
-  @keyframes moveGrid {
-    from { transform: translate(0,0); }
-    to { transform: translate(-40px,-40px); }
   }
 
   .form-container {
@@ -61,8 +55,7 @@
     z-index: 1;
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 25px rgba(107, 68, 35, 0.1);
     border-radius: var(--radius);
     padding: 2.5rem;
     width: 380px;
@@ -71,7 +64,7 @@
   }
 
   .form-container:hover {
-    box-shadow: 0 8px 35px rgba(0, 200, 83, 0.15);
+    box-shadow: 0 8px 35px rgba(107, 68, 35, 0.15);
   }
 
   h1 {
@@ -81,6 +74,7 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 1.8rem;
+    text-shadow: 0 0 8px rgba(139, 94, 60, 0.2);
   }
 
   form {
@@ -103,7 +97,7 @@
 
   input[type="text"],
   input[type="password"] {
-    width: 80%;
+    width: 85%;
     padding: 0.75rem 2.5rem 0.75rem 1rem;
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
@@ -116,7 +110,8 @@
   input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 8px rgba(0, 200, 83, 0.2);
+    box-shadow: 0 0 8px var(--shadow-color);
+    background-color: #fffaf5;
   }
 
   .toggle-password {
@@ -147,13 +142,14 @@
     border: none;
     border-radius: var(--radius);
     cursor: pointer;
-    transition: background 0.25s ease, transform 0.15s ease;
+    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
   }
 
   button[type="submit"]:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 200, 83, 0.25);
+    box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
   }
 
   .back-link {
@@ -163,9 +159,11 @@
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 600;
+    transition: color 0.2s ease;
   }
 
   .back-link:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
   }
 

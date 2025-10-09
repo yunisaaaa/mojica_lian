@@ -5,75 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
 
-  <!-- Tailwind & Font Awesome -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
 
   <style>
     :root {
-      --bg-gradient: linear-gradient(135deg, #f9fafb 0%, #eef2ff 100%);
-      --panel-bg: rgba(255, 255, 255, 0.75);
-      --border-color: rgba(203, 213, 225, 0.4);
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --accent: #2563eb;
-      --accent-glow: 0 0 10px rgba(37, 99, 235, 0.4);
-      --danger: #dc2626;
-      --font-heading: 'Poppins', sans-serif;
-      --font-body: 'Inter', sans-serif;
+      --bg-gradient: linear-gradient(to bottom right, #f6f1eb, #e7d8c9);
+      --panel-color: #fffaf5;
+      --accent-color: #8b5e3c;
+      --accent-hover: #6b4423;
+      --text-color: #3e2c21;
+      --border-color: #d6c3b4;
+      --shadow-color: rgba(139, 94, 60, 0.25);
+      --danger: #b23c17;
     }
 
     body {
       background: var(--bg-gradient);
-      font-family: var(--font-body);
-      color: var(--text-primary);
-      min-height: 100vh;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+      color: var(--text-color);
       margin: 0;
-      padding: 2rem 1rem;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      backdrop-filter: blur(6px);
-      animation: gradientMove 10s ease infinite alternate;
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+      padding: 3rem 1rem;
     }
 
     .container {
-      background: var(--panel-bg);
+      background: var(--panel-color);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(107, 68, 35, 0.1);
       padding: 2.5rem 3rem;
-      max-width: 1200px;
       width: 100%;
-      transition: 0.3s ease;
+      max-width: 1100px;
+      transition: all 0.3s ease;
     }
 
     .container:hover {
-      box-shadow: 0 0 25px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 12px 40px rgba(107, 68, 35, 0.15);
     }
 
     h1 {
-      font-family: var(--font-heading);
       text-align: center;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-size: 1.9rem;
+      color: var(--accent-color);
+      font-size: 1.8rem;
       letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(139, 94, 60, 0.2);
       margin-bottom: 2rem;
-      text-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
     }
 
-    /* Search + Create */
-    .header-controls-container {
+    /* Header Controls */
+    .header-controls {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
+      flex-wrap: wrap;
       align-items: center;
       margin-bottom: 1.8rem;
       gap: 1rem;
@@ -82,40 +69,42 @@
     #searchBox {
       flex: 1;
       padding: 0.8rem 1rem;
-      border-radius: 10px;
       border: 1px solid var(--border-color);
-      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      background: #fdf7f2;
       font-size: 1rem;
-      transition: 0.3s ease;
+      transition: all 0.3s ease;
+      color: var(--text-color);
     }
 
     #searchBox:focus {
-      border-color: var(--accent);
-      box-shadow: var(--accent-glow);
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px var(--shadow-color);
       outline: none;
+      background: #fffaf5;
     }
 
     .search-btn,
-    .create-record-btn {
-      background: var(--accent);
+    .create-btn {
+      background: var(--accent-color);
       color: #fff;
       border: none;
       border-radius: 10px;
       font-weight: 600;
+      padding: 0.8rem 1.3rem;
       cursor: pointer;
-      padding: 0.8rem 1.4rem;
-      transition: 0.3s ease;
-      box-shadow: 0 0 0 rgba(37, 99, 235, 0);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
     }
 
     .search-btn:hover,
-    .create-record-btn:hover {
-      background-color: #1d4ed8;
-      box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+    .create-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
       transform: translateY(-1px);
     }
 
-    .create-record-btn {
+    .create-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -123,17 +112,12 @@
     }
 
     /* Table */
-    .table-responsive {
-      overflow-x: auto;
-      border-radius: 12px;
+    .table-container {
       border: 1px solid var(--border-color);
-      background: rgba(255, 255, 255, 0.75);
-      box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
-      transition: 0.3s ease;
-    }
-
-    .table-responsive:hover {
-      box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+      border-radius: 12px;
+      overflow-x: auto;
+      background: #fffaf5;
+      box-shadow: 0 8px 25px rgba(107, 68, 35, 0.08);
     }
 
     table {
@@ -142,82 +126,78 @@
       font-size: 0.95rem;
     }
 
-    thead {
-      background: rgba(240, 245, 255, 0.8);
-    }
-
     th, td {
       padding: 1rem;
       border-bottom: 1px solid var(--border-color);
       text-align: center;
-      color: var(--text-primary);
     }
 
     th {
       text-transform: uppercase;
-      font-weight: 600;
       font-size: 0.85rem;
-      color: var(--text-secondary);
+      color: #5a4634;
+      background: #fdf7f2;
     }
 
     tr:hover {
-      background: rgba(237, 242, 255, 0.6);
-      transition: background 0.2s ease;
+      background: rgba(243, 233, 221, 0.6);
+      transition: 0.2s ease;
     }
 
-    /* Action Links */
     .action-links a {
-      color: var(--accent);
-      font-weight: 500;
+      color: var(--accent-color);
       text-decoration: none;
+      font-weight: 600;
       transition: 0.2s ease;
     }
 
     .action-links a:hover {
-      text-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+      color: var(--accent-hover);
+      text-shadow: 0 0 6px rgba(139, 94, 60, 0.3);
     }
 
-    .action-links .delete-link {
+    .delete-link {
       color: var(--danger);
     }
 
+    .delete-link:hover {
+      color: #7a1c0f;
+    }
+
     /* Pagination */
-    .pagination-container {
+    .pagination {
       margin-top: 2rem;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
-    .pagination-container a,
-    .pagination-container strong {
+    .pagination a,
+    .pagination strong {
       padding: 0.6rem 1.2rem;
-      border: 1px solid var(--accent);
+      border: 1px solid var(--accent-color);
       border-radius: 8px;
-      text-decoration: none;
       font-weight: 600;
+      color: var(--accent-color);
+      text-decoration: none;
       transition: 0.3s ease;
-      color: var(--accent);
     }
 
-    .pagination-container a:hover {
-      background: var(--accent);
+    .pagination a:hover {
+      background: var(--accent-color);
       color: #fff;
-      box-shadow: var(--accent-glow);
     }
 
-    .pagination-container strong {
-      background: var(--accent);
+    .pagination strong {
+      background: var(--accent-color);
       color: #fff;
-      box-shadow: var(--accent-glow);
     }
 
-    /* Logout */
+    /* Logout Button */
     .logout-container {
+      text-align: center;
       margin-top: 2rem;
-      display: flex;
-      justify-content: center;
     }
 
     .logout-btn {
@@ -225,52 +205,48 @@
       color: #fff;
       border: none;
       border-radius: 10px;
-      font-weight: 600;
       padding: 0.8rem 1.5rem;
+      font-weight: 600;
       cursor: pointer;
       transition: 0.3s ease;
     }
 
     .logout-btn:hover {
-      background-color: #b91c1c;
-      box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+      background: #7a1c0f;
+      box-shadow: 0 6px 15px rgba(178, 60, 23, 0.4);
       transform: translateY(-1px);
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .container {
         padding: 2rem;
       }
 
-      .header-controls-container {
+      .header-controls {
         flex-direction: column;
       }
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <h1>Users</h1>
 
-    <div class="header-controls-container">
-      <div class="search-container">
-        <form action="<?= site_url('users/show'); ?>" method="get" class="search-form">
-          <?php $q = isset($_GET['q']) ? $_GET['q'] : ''; ?>
-          <input type="text" name="q" placeholder="Search records..." value="<?= html_escape($q); ?>" id="searchBox">
-          <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-        </form>
-      </div>
+    <div class="header-controls">
+      <form action="<?= site_url('users/show'); ?>" method="get" style="display: flex; gap: 0.6rem; flex: 1;">
+        <?php $q = isset($_GET['q']) ? $_GET['q'] : ''; ?>
+        <input type="text" name="q" id="searchBox" placeholder="Search records..." value="<?= html_escape($q); ?>">
+        <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
 
       <?php $current_role = isset($_SESSION['role']) ? $_SESSION['role'] : ''; ?>
       <?php if ($current_role === 'admin'): ?>
-      <a href="<?= site_url('users/create'); ?>" class="create-record-btn"><i class="fa-solid fa-plus"></i> Create New Record</a>
+      <a href="<?= site_url('users/create'); ?>" class="create-btn"><i class="fa-solid fa-plus"></i> Create User</a>
       <?php endif; ?>
     </div>
 
-    <div class="table-responsive">
-      <table id="studentsTable">
+    <div class="table-container">
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -301,13 +277,13 @@
       </table>
     </div>
 
-    <div class="pagination-container">
+    <div class="pagination">
       <?php if (isset($page)) echo $page; ?>
     </div>
 
     <div class="logout-container">
       <?php if (isset($_SESSION['user_id'])): ?>
-      <form action="<?= site_url('logout'); ?>" method="post" style="display: inline;">
+      <form action="<?= site_url('logout'); ?>" method="post">
         <button type="submit" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
       </form>
       <?php endif; ?>

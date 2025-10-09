@@ -3,29 +3,31 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Register Page</title>
+<title>Register | System Console</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    --bg-color: #f5f7fa;
-    --panel-bg: rgba(255, 255, 255, 0.9);
-    --border-color: rgba(0, 0, 0, 0.08);
-    --primary-color: #007bff; /* hacker green */
-    --primary-hover: #007bff;
-    --text-color: #111827;
-    --text-muted: #4b5563;
-    --input-bg: rgba(255, 255, 255, 0.7);
-    --input-border: rgba(0, 0, 0, 0.1);
-    --error-color: #dc2626;
+    --bg-color: #f5ede3;
+    --panel-bg: #fffaf5;
+    --border-color: #d6c3b4;
+    --primary-color: #8b5e3c; /* Coffee brown */
+    --primary-hover: #6b4423;
+    --text-color: #3e2c21;
+    --text-muted: #5a4634;
+    --input-bg: #fdf7f2;
+    --input-border: #d6c3b4;
+    --error-color: #b23c17;
     --radius: 10px;
-    --font-main: "Consolas", "Courier New", monospace;
+    --shadow-color: rgba(139, 94, 60, 0.25);
+    --font-main: "Poppins", sans-serif;
   }
 
   body {
-    background: linear-gradient(135deg, #f8fafc, #e3f2fd);
+    background: linear-gradient(135deg, #f6f1eb, #e7d8c9);
     font-family: var(--font-main);
     display: flex;
     justify-content: center;
@@ -36,25 +38,15 @@
     color: var(--text-color);
   }
 
-  /* Animated hacker-style background grid */
   body::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    background: 
-      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    animation: moveGrid 10s linear infinite;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(139,94,60,0.05) 0%, transparent 60%),
+      radial-gradient(circle at 80% 80%, rgba(139,94,60,0.05) 0%, transparent 60%);
     z-index: 0;
-  }
-
-  @keyframes moveGrid {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-40px, -40px); }
   }
 
   .form-container {
@@ -62,8 +54,7 @@
     z-index: 1;
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 25px rgba(107, 68, 35, 0.1);
     border-radius: var(--radius);
     padding: 2.5rem;
     width: 400px;
@@ -72,7 +63,7 @@
   }
 
   .form-container:hover {
-    box-shadow: 0 8px 35px rgba(0, 200, 83, 0.15);
+    box-shadow: 0 8px 35px rgba(107, 68, 35, 0.15);
   }
 
   h1 {
@@ -82,6 +73,7 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 1.8rem;
+    text-shadow: 0 0 8px rgba(139, 94, 60, 0.2);
   }
 
   form {
@@ -98,11 +90,15 @@
     letter-spacing: 0.5px;
   }
 
+  .input-wrapper {
+    position: relative;
+  }
+
   input[type="text"],
   input[type="email"],
   input[type="password"],
   select {
-    width: 80%;
+    width: 100%;
     padding: 0.75rem 2.5rem 0.75rem 1rem;
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
@@ -116,11 +112,17 @@
   select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 8px rgba(0, 200, 83, 0.2);
+    box-shadow: 0 0 8px var(--shadow-color);
+    background-color: #fffaf5;
   }
 
-  .input-wrapper {
-    position: relative;
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%235a4634' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px;
   }
 
   .toggle-password {
@@ -151,13 +153,14 @@
     border: none;
     border-radius: var(--radius);
     cursor: pointer;
-    transition: background 0.25s ease, transform 0.15s ease;
+    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
   }
 
   button[type="submit"]:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 200, 83, 0.25);
+    box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
   }
 
   .back-link {
@@ -167,9 +170,11 @@
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 600;
+    transition: color 0.2s ease;
   }
 
   .back-link:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
   }
 
@@ -177,7 +182,7 @@
     color: var(--error-color);
     font-size: 0.9rem;
     margin-bottom: 1rem;
-    text-align: left;
+    text-align: center;
   }
 
   @media (max-width: 420px) {
@@ -188,9 +193,10 @@
   }
 </style>
 </head>
+
 <body>
   <div class="form-container">
-    <h1>Register</h1>
+    <h1>Create Account</h1>
 
     <?php if(isset($error)): ?>
       <div class="error"><?=$error;?></div>
@@ -198,11 +204,14 @@
 
     <form action="<?=site_url('register');?>" method="post" autocomplete="on">
       <div class="form-group">
-        <label for="role"></label>
-        <select id="role" name="role" required>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
+        <label for="role">Role</label>
+        <div class="input-wrapper">
+          <select id="role" name="role" required>
+            <option value="" disabled selected hidden>Select role</option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
       </div>
 
       <div class="form-group">
@@ -232,24 +241,22 @@
       <button type="submit">Register</button>
     </form>
 
-    <a href="<?=site_url('login');?>" class="back-link">Back to Login</a>
+    <a href="<?=site_url('login');?>" class="back-link">Already have an account?</a>
   </div>
 
-  <script>
-    (function(){
-      const toggleBtn = document.getElementById('togglePassword');
-      const pwd = document.getElementById('password');
-      const icon = toggleBtn.querySelector('i');
+<script>
+  const toggleBtn = document.getElementById('togglePassword');
+  const pwd = document.getElementById('password');
+  const icon = toggleBtn.querySelector('i');
 
-      toggleBtn.addEventListener('click', function(){
-        const isHidden = pwd.type === 'password';
-        pwd.type = isHidden ? 'text' : 'password';
-        icon.classList.toggle('fa-eye');
-        icon.classList.toggle('fa-eye-slash');
-        this.setAttribute('aria-pressed', String(isHidden));
-        this.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
-      });
-    })();
-  </script>
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = pwd.type === 'password';
+    pwd.type = isHidden ? 'text' : 'password';
+    icon.classList.toggle('fa-eye');
+    icon.classList.toggle('fa-eye-slash');
+    toggleBtn.setAttribute('aria-pressed', String(isHidden));
+    toggleBtn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+  });
+</script>
 </body>
 </html>

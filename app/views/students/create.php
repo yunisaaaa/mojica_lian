@@ -7,19 +7,19 @@
 
   <style>
     :root {
-      --bg-gradient: linear-gradient(to bottom right, #f7fbff, #e6f0ff);
-      --panel-color: #ffffff;
-      --accent-color: #0073ff; /* Neon blue */
-      --accent-hover: #005ae0;
-      --text-color: #1f2937;
-      --border-color: #e2e8f0;
-      --input-bg: #f9fafb;
-      --shadow-color: rgba(0, 115, 255, 0.25);
+      --bg-gradient: linear-gradient(to bottom right, #f6f1eb, #e7d8c9);
+      --panel-color: #fffaf5;
+      --accent-color: #8b5e3c; /* Coffee brown */
+      --accent-hover: #6b4423;
+      --text-color: #3e2c21;
+      --border-color: #d6c3b4;
+      --input-bg: #fdf7f2;
+      --shadow-color: rgba(139, 94, 60, 0.25);
     }
 
     body {
       background: var(--bg-gradient);
-      font-family: "Inter", "Segoe UI", sans-serif;
+      font-family: "Poppins", "Segoe UI", sans-serif;
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -31,24 +31,24 @@
       background: var(--panel-color);
       border-radius: 16px;
       padding: 2.5rem 3rem;
-      box-shadow: 0 10px 30px rgba(0, 115, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(107, 68, 35, 0.1);
       width: 100%;
       max-width: 400px;
       text-align: center;
-      border: 1px solid rgba(0, 115, 255, 0.15);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
     }
 
     .form-container:hover {
-      box-shadow: 0 12px 40px rgba(0, 115, 255, 0.15);
+      box-shadow: 0 12px 40px rgba(107, 68, 35, 0.15);
     }
 
     h1 {
       color: var(--accent-color);
-      text-shadow: 0 0 8px rgba(0, 115, 255, 0.5);
       font-size: 1.8rem;
       margin-bottom: 2rem;
       letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(139, 94, 60, 0.2);
     }
 
     form {
@@ -60,7 +60,7 @@
     label {
       text-align: left;
       font-size: 0.9rem;
-      color: #555;
+      color: #5a4634;
       font-weight: 600;
       margin-bottom: 0.2rem;
     }
@@ -73,6 +73,7 @@
       border: 1px solid var(--border-color);
       background: var(--input-bg);
       font-size: 1rem;
+      color: var(--text-color);
       transition: all 0.3s ease;
     }
 
@@ -80,7 +81,7 @@
       border-color: var(--accent-color);
       outline: none;
       box-shadow: 0 0 10px var(--shadow-color);
-      background: #fff;
+      background: #fffaf5;
     }
 
     button[type="submit"] {
@@ -93,12 +94,12 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0, 115, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
     }
 
     button[type="submit"]:hover {
       background: var(--accent-hover);
-      box-shadow: 0 6px 20px rgba(0, 115, 255, 0.35);
+      box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
       transform: translateY(-1px);
     }
 
@@ -114,7 +115,7 @@
 
     .back-link:hover {
       color: var(--accent-hover);
-      text-shadow: 0 0 6px rgba(0, 115, 255, 0.5);
+      text-shadow: 0 0 6px rgba(139, 94, 60, 0.3);
     }
   </style>
 </head>

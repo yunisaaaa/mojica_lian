@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UPDATE USER</title>
 
   <!-- Font Awesome -->
@@ -10,15 +10,14 @@
 
   <style>
     :root {
-      --bg-gradient: linear-gradient(to bottom right, #f7fbff, #e6f0ff);
-      --panel-color: #ffffff;
-      --accent-color: #0073ff; /* Neon Blue */
-      --accent-hover: #005ae0;
-      --text-color: #1e293b;
-      --border-color: #e2e8f0;
-      --input-bg: #f9fafb;
-      --shadow-color: rgba(0, 115, 255, 0.25);
-      --font-body: 'Inter', 'Segoe UI', sans-serif;
+      --bg-gradient: linear-gradient(to bottom right, #f6f1eb, #e7d8c9);
+      --panel-color: #fffaf5;
+      --accent-color: #8b5e3c; /* Coffee brown */
+      --accent-hover: #6b4423;
+      --text-color: #3e2c21;
+      --border-color: #d6c3b4;
+      --input-bg: #fdf7f2;
+      --shadow-color: rgba(139, 94, 60, 0.25);
     }
 
     body {
@@ -28,19 +27,19 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      font-family: var(--font-body);
+      font-family: "Poppins", "Segoe UI", sans-serif;
       color: var(--text-color);
       padding: 1rem;
     }
 
     .form-container {
-      background-color: var(--panel-color);
+      background: var(--panel-color);
       border-radius: 16px;
       padding: 2.5rem 3rem;
       width: 100%;
       max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0, 115, 255, 0.1);
-      border: 1px solid rgba(0, 115, 255, 0.15);
+      box-shadow: 0 10px 30px rgba(107, 68, 35, 0.1);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
       animation: fadeIn 0.6s ease;
     }
@@ -52,7 +51,7 @@
 
     h1 {
       color: var(--accent-color);
-      text-shadow: 0 0 8px rgba(0, 115, 255, 0.5);
+      text-shadow: 0 0 8px rgba(139, 94, 60, 0.2);
       text-align: center;
       font-size: 1.8rem;
       margin-bottom: 2rem;
@@ -72,7 +71,7 @@
 
     label {
       display: block;
-      color: #475569;
+      color: #5a4634;
       font-size: 0.9rem;
       font-weight: 600;
       margin-bottom: 0.4rem;
@@ -96,7 +95,7 @@
       outline: none;
       border-color: var(--accent-color);
       box-shadow: 0 0 10px var(--shadow-color);
-      background: #fff;
+      background: #fffaf5;
     }
 
     button[type="submit"] {
@@ -110,13 +109,13 @@
       cursor: pointer;
       transition: all 0.3s ease;
       text-transform: uppercase;
-      box-shadow: 0 4px 15px rgba(0, 115, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
       letter-spacing: 0.5px;
     }
 
     button[type="submit"]:hover {
       background: var(--accent-hover);
-      box-shadow: 0 6px 20px rgba(0, 115, 255, 0.35);
+      box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
       transform: translateY(-1px);
     }
 
@@ -134,7 +133,7 @@
 
     .back-link:hover {
       color: var(--accent-hover);
-      text-shadow: 0 0 6px rgba(0, 115, 255, 0.5);
+      text-shadow: 0 0 6px rgba(139, 94, 60, 0.3);
     }
 
     @media (max-width: 480px) {
