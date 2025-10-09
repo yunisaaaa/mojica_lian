@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  
+
   <style>
     :root {
       --bg-gradient: linear-gradient(to bottom right, #f6f1eb, #e7d8c9);
@@ -166,34 +166,35 @@
     }
 
     /* Pagination */
-    .pagination {
-      margin-top: 2rem;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column; /* 👈 makes it vertical */
+  align-items: center;    /* centers each item horizontally */
+  gap: 0.6rem;
+}
 
-    .pagination a,
-    .pagination strong {
-      padding: 0.6rem 1.2rem;
-      border: 1px solid var(--accent-color);
-      border-radius: 8px;
-      font-weight: 600;
-      color: var(--accent-color);
-      text-decoration: none;
-      transition: 0.3s ease;
-    }
+.pagination a,
+.pagination strong {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: 0.3s ease;
+  width: fit-content; /* keeps buttons from stretching */
+}
 
-    .pagination a:hover {
-      background: var(--accent-color);
-      color: #fff;
-    }
+.pagination a:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
 
-    .pagination strong {
-      background: var(--accent-color);
-      color: #fff;
-    }
+.pagination strong {
+  background: var(--accent-color);
+  color: #fff;
+}
 
     /* Logout Button */
     .logout-container {
