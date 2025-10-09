@@ -198,7 +198,7 @@
 
     <form action="<?=site_url('register');?>" method="post" autocomplete="on">
       <div class="form-group">
-        <label for="role">Role</label>
+        <label for="role"></label>
         <select id="role" name="role" required>
           <option value="user">User</option>
           <option value="admin">Admin</option>

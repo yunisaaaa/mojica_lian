@@ -71,7 +71,6 @@ $database['main'] = array(
 );
 
 
-
 /*
 $database['main'] = array(
     'driver'	=> 'mysql',
