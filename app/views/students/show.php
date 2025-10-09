@@ -169,13 +169,14 @@
 .pagination {
   margin-top: 2rem;
   display: flex;
-  flex-direction: row; /* 👈 makes it vertical */
+  flex-direction: row; /* makes it horizontal */
   align-items: center ;    /* centers each item horizontally */
   gap: 0.6rem;
 }
 
 .pagination a,
 .pagination strong {
+  display: inline-flex;
   padding: 0.6rem 1.2rem;
   border: 1px solid var(--accent-color);
   border-radius: 8px;
