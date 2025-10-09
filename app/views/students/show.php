@@ -172,6 +172,9 @@
   flex-direction: row; /* makes it horizontal */
   align-items: center ;    /* centers each item horizontally */
   gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .pagination a,
@@ -185,6 +188,7 @@
   text-decoration: none;
   transition: 0.3s ease;
   width: fit-content; /* keeps buttons from stretching */
+  margin-right: 0.5rem;
 }
 
 .pagination a:hover {
