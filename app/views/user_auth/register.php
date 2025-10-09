@@ -98,7 +98,7 @@
   input[type="email"],
   input[type="password"],
   select {
-    width: 100%;
+    width: 85%;
     padding: 0.75rem 2.5rem 0.75rem 1rem;
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
