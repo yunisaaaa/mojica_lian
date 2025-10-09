@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <style>
     :root {
@@ -166,52 +166,46 @@
     }
 
 /* Pagination */
-.pagination {
+.pagination-nav {
   margin-top: 2rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  justify-content: center;
+}
+
+.pagination-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  gap: 0.5rem;
 }
 
-.pagination ul {
-  list-style: none; /* remove bullet points from inner list */
-  padding: 0;
+.pagination-item {
   margin: 0;
 }
 
-.pagination li {
-  margin-bottom: 0.8rem; /* spacing between items */
-}
-
-.pagination a,
-.pagination strong {
-  display: inline-flex;
+.pagination-link,
+.pagination-list strong {
   padding: 0.6rem 1.2rem;
   border: 1px solid var(--accent-color);
-  border-radius: 12px; /* slightly more rounded */
-  font-weight: 600;
-  color: var(--accent-color);
+  border-radius: 8px;
   text-decoration: none;
+  font-weight: 600;
   transition: 0.3s ease;
-  width: fit-content; /* keeps buttons from stretching */
-  box-shadow: 1px 2px 5px rgba(139, 94, 60, 0.15); /* subtle shadow */
-  margin-right: 0; /* remove right margin for vertical layout */
+  color: var(--accent-color);
+  display: inline-block;
 }
 
-.pagination a:hover {
+.pagination-link:hover {
   background: var(--accent-color);
   color: #fff;
-  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3); /* stronger shadow on hover */
+  box-shadow: 0 0 8px var(--shadow-color);
 }
 
-.pagination strong {
+.pagination-list strong {
   background: var(--accent-color);
-  color: #fff;
-  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3);
+  color: rgba(122, 86, 86, 1);
+  box-shadow: 0 0 8px var(--shadow-color);
 }
 
     /* Logout Button */
@@ -297,7 +291,7 @@
       </table>
     </div>
 
-    <div class="pagination">
+    <div class="pagination-nav">
       <?php if (isset($page)) echo $page; ?>
     </div>
 
