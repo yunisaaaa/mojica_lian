@@ -165,16 +165,26 @@
       color: #7a1c0f;
     }
 
-    /* Pagination */
+/* Pagination */
 .pagination {
   margin-top: 2rem;
   display: flex;
-  flex-direction: row; /* makes it horizontal */
-  align-items: center ;    /* centers each item horizontally */
-  gap: 0.6rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.pagination ul {
+  list-style: none; /* remove bullet points from inner list */
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin-bottom: 0.8rem; /* spacing between items */
 }
 
 .pagination a,
@@ -182,23 +192,26 @@
   display: inline-flex;
   padding: 0.6rem 1.2rem;
   border: 1px solid var(--accent-color);
-  border-radius: 8px;
+  border-radius: 12px; /* slightly more rounded */
   font-weight: 600;
   color: var(--accent-color);
   text-decoration: none;
   transition: 0.3s ease;
   width: fit-content; /* keeps buttons from stretching */
-  margin-right: 0.5rem;
+  box-shadow: 1px 2px 5px rgba(139, 94, 60, 0.15); /* subtle shadow */
+  margin-right: 0; /* remove right margin for vertical layout */
 }
 
 .pagination a:hover {
   background: var(--accent-color);
   color: #fff;
+  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3); /* stronger shadow on hover */
 }
 
 .pagination strong {
   background: var(--accent-color);
   color: #fff;
+  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3);
 }
 
     /* Logout Button */
