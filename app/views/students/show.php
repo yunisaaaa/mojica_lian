@@ -166,46 +166,51 @@
     }
 
 /* Pagination */
-.pagination-nav {
+.pagination {
   margin-top: 2rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* changed to vertical */
+  justify-content: center; /* align items to start horizontally */
+  flex-wrap: wrap;
+  gap: 0.5rem; /* increased gap for vertical spacing */
+ 
 }
 
-.pagination-list {
-  list-style: none;
+.pagination ul {
+  list-style: none; /* remove bullet points from inner list */
   padding: 0;
   margin: 0;
-  display: flex;
-  gap: 0.5rem;
 }
 
-.pagination-item {
-  margin: 0;
+.pagination li {
+  margin-bottom: 0.8rem; /* spacing between items */
 }
 
-.pagination-link,
-.pagination-list strong {
+.pagination a,
+.pagination strong {
+  display: inline-flex;
   padding: 0.6rem 1.2rem;
   border: 1px solid var(--accent-color);
-  border-radius: 8px;
-  text-decoration: none;
+  border-radius: 12px; /* slightly more rounded */
   font-weight: 600;
-  transition: 0.3s ease;
   color: var(--accent-color);
-  display: inline-block;
+  text-decoration: none;
+  transition: 0.3s ease;
+  width: fit-content; /* keeps buttons from stretching */
+  box-shadow: 1px 2px 5px rgba(139, 94, 60, 0.15); /* subtle shadow */
+  margin-right: 0; /* remove right margin for vertical layout */
 }
 
-.pagination-link:hover {
+.pagination a:hover {
   background: var(--accent-color);
   color: #fff;
-  box-shadow: 0 0 8px var(--shadow-color);
+  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3); /* stronger shadow on hover */
 }
 
-.pagination-list strong {
+.pagination strong {
   background: var(--accent-color);
-  color: rgba(122, 86, 86, 1);
-  box-shadow: 0 0 8px var(--shadow-color);
+  color: #fff;
+  box-shadow: 2px 4px 10px rgba(107, 68, 35, 0.3);
 }
 
     /* Logout Button */
@@ -291,7 +296,7 @@
       </table>
     </div>
 
-    <div class="pagination-nav">
+    <div class="pagination">
       <?php if (isset($page)) echo $page; ?>
     </div>
 
