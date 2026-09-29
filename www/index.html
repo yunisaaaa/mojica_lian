@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<video class="background-video" autoplay muted loop playsinline aria-hidden="true">
+		<source src="videoplayback.mp4" type="video/mp4">
+	</video>
+	<div class="video-overlay" aria-hidden="true"></div>
+	<div class="page-shell">
+		<header class="topbar">
+			<div class="status-pill"><span class="status-dot"></span>Local &amp; private</div>
+		</header>
+
+		<main id="workspace">
+			<section class="workspace" aria-label="Encryption workspace">
+				<div class="panel input-panel">
+					<div class="panel-heading">
+						<div>
+							<h2>Input message</h2>
+						</div>
+						<button class="text-button" id="clearBtn" type="button">Clear</button>
+					</div>
+					<label for="textInput">Plaintext or ciphertext</label>
+					<textarea id="textInput" maxlength="5000" placeholder="Type or paste your message here..." spellcheck="true"></textarea>
+					<div class="field-meta"><span id="characterCount">0 characters</span><span>Max 5,000</span></div>
+				</div>
+
+				<div class="panel controls-panel">
+					<div class="panel-heading">
+						<div>
+							<h2>Set controls</h2>
+						</div>
+						<span class="key-icon" aria-hidden="true">KEY</span>
+					</div>
+					<div class="control-grid">
+						<div class="field">
+							<label for="shiftInput">Shift key</label>
+							<div class="number-control">
+								<button class="stepper" id="decreaseShift" type="button" aria-label="Decrease shift key">−</button>
+								<input id="shiftInput" type="number" min="0" max="25" value="3" inputmode="numeric">
+								<button class="stepper" id="increaseShift" type="button" aria-label="Increase shift key">+</button>
+							</div>
+						</div>
+						<div class="field">
+							<label for="modeSelect">Action</label>
+							<select id="modeSelect">
+								<option value="encrypt">Encrypt</option>
+								<option value="decrypt">Decrypt</option>
+							</select>
+						</div>
+					</div>
+					<button class="primary-button" id="processBtn" type="button"><span id="processLabel">Encrypt message</span><span aria-hidden="true">→</span></button>
+				</div>
+
+				<div class="panel result-panel">
+					<div class="panel-heading">
+						<div>
+							<h2>Your result</h2>
+						</div>
+						<button class="text-button" id="copyBtn" type="button" disabled>Copy result</button>
+					</div>
+					<div class="result-box" id="outputResult" role="status" aria-live="polite"><span class="result-placeholder">Your processed message will appear here.</span></div>
+					<div class="result-footer"><span id="resultMode">Waiting for input</span><button class="swap-button" id="swapBtn" type="button" disabled>Use result as input <span aria-hidden="true">↗</span></button></div>
+				</div>
+			</section>
+
+		</main>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>
+

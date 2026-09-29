@@ -1,0 +1,6 @@
+{
+    "appId": "com.example.cipherdesk",
+    "appName": "Cipher Desk",
+    "webDir": "www",
+    "bundledWebRuntime": false
+}
